@@ -37,14 +37,16 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 - MySQL
 - Meilisearch
 
-# BlogApp Setup Commands
+---
 
-## 1. Clone Repository
+## Setup Commands
+
+### 1. Clone Repository
 ```bash
 git clone https://github.com/Muhammadahmad14/react-laravel-blog.git
 cd react-laravel-blog
 
-## 2. Backend Setup (Laravel)
+
 cd backend
 composer install
 cp .env.example .env
@@ -53,21 +55,15 @@ php artisan migrate
 php artisan db:seed  # optional
 php artisan serve
 
-
-3. Frontend Setup (React)
 cd ../frontend
 npm install
 npm start
 
-4. Search Setup (Laravel Scout + Meilisearch)
-# Add the following to backend/.env manually:
+
 SCOUT_DRIVER=meilisearch
 MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=your_meilisearch_key
 
-
-5. Re-index Models
 cd ../backend
 php artisan scout:import "App\Models\Post"
 php artisan scout:import "App\Models\User"
-
