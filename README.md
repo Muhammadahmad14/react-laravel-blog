@@ -12,7 +12,6 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 - Create, edit, and delete blog posts
 - Search blog posts using Laravel Scout & Meilisearch
 - Responsive and interactive frontend built with React
-- Admin panel for managing content
 - Fully modular and extendable
 
 ---
@@ -44,28 +43,34 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 
 ```bash
 
-## Installation
-```bash
 git clone https://github.com/Muhammadahmad14/react-laravel-blog.git
+cd react-laravel-blog
+
+
+```Backened Installation
+
 cd backend
 composer install
 cp .env.example .env
 php artisan key:generate
 php artisan migrate
-php artisan db:seed
+php artisan db:seed  # optional
+php artisan serve
+
+```Fronted
 cd ../frontend
 npm install
 npm start
 
 
-
-Install  scout and melisearch
+```Search setup (Laravel Scout + Meilisearch)
 SCOUT_DRIVER=meilisearch
 MEILISEARCH_HOST=http://127.0.0.1:7700
-
-php artisan scout:import "App\Models\Post"
-
 MEILISEARCH_KEY=your_meilisearch_key
+
+```Re-index models:
+php artisan scout:import "App\Models\Post"
+php artisan scout:import "App\Models\User"
 
 
 
