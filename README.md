@@ -43,7 +43,6 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 1. **Clone the repository:**
 
 ```bash
-<div>
 
 ## Installation
 ```bash
