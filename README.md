@@ -47,7 +47,7 @@ git clone https://github.com/Muhammadahmad14/react-laravel-blog.git
 cd react-laravel-blog
 
 
-``` Backend
+```bash
 cd backend
 composer install
 cp .env.example .env
@@ -56,13 +56,14 @@ php artisan migrate
 php artisan db:seed  # optional
 php artisan serve
 
-```Fronted
+```bash
 cd ../frontend
 npm install
 npm start
 
 
-```Search setup (Laravel Scout + Meilisearch)
+```bash
+ setup (Laravel Scout + Meilisearch)
 SCOUT_DRIVER=meilisearch
 MEILISEARCH_HOST=http://127.0.0.1:7700
 MEILISEARCH_KEY=your_meilisearch_key
