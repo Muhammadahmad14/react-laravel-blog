@@ -47,7 +47,7 @@ git clone https://github.com/Muhammadahmad14/react-laravel-blog.git
 cd react-laravel-blog
 
 
-```Backened Installation
+``` 
 
 cd backend
 composer install
@@ -57,7 +57,8 @@ php artisan migrate
 php artisan db:seed  # optional
 php artisan serve
 
-```Fronted
+
+```
 cd ../frontend
 npm install
 npm start
