@@ -65,7 +65,7 @@ php artisan serve
 
 ### 3. Frontend Setup (React)
 ```bash
-cd ../frontend
+cd /foldername
 npm install
 npm start
 ```
@@ -84,7 +84,7 @@ MEILISEARCH_KEY=your_meilisearch_key
 
 ### 5. Re-index Models
 ```bash
-cd ../backend
+cd /foldername
 php artisan scout:import "App\Models\Post"
 php artisan scout:import "App\Models\User"
 ```
