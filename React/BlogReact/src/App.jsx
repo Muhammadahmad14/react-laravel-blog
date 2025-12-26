@@ -53,7 +53,6 @@ function App() {
 
       {/*  Main Content */}
       <div className="flex-1 overflow-y-auto scrollbar-hide p-4 sm:p-6 mt-16 md:mt-0">
-        <SearchBar />
         <Outlet />
         <LogoutBtn />
       </div>

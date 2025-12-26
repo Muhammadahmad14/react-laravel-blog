@@ -13,6 +13,7 @@ import EditPost from "./components/Pages/EditPost.jsx";
 import Post from "./components/Pages/Post.jsx";
 import SearchPage from "./components/Pages/SearchPage.jsx";
 import HomePgae from "./components/Pages/HomePgae.jsx";
+import UserProfile from "./components/User/UserProfile.jsx";
 const router = createBrowserRouter([
    {
     path: "/login",
@@ -48,6 +49,9 @@ const router = createBrowserRouter([
       },{
         path: "/search/:query",
         element: <SearchPage />
+      },{
+        path: "/:username/:id/profile",
+        element: <UserProfile />
       }
     ]
   },

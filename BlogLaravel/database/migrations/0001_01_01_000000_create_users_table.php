@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('profile_img')->nullable();
             $table->enum('profile_status',['public','private'])->default('public');
             $table->string('description')->nullable();
+            $table->string('about')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

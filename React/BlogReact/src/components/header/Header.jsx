@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { Home, Users, User, LogOut, Search } from "lucide-react";
 import { authservice } from "../../Laravel/Auth";
 
@@ -26,7 +26,7 @@ function Header() {
 
   const navbarlg = [
     { name: "Home", icon: <Home size={20} />, to: "/" },
-    { name: "Profile", icon: <User size={20} />, to: "/{name}/profile" },
+    { name: "Profile", icon: <User size={20} />, to: `/${user?.name}/${user?.id}/profile` },
     { name: "Followers", icon: <Users size={20} />, to: "/followers" },
     { name: "Log Out", icon: <LogOut size={20} />, to: "/logout" },
   ];
@@ -53,9 +53,11 @@ function Header() {
             />
             <span className="absolute bottom-2 right-2 w-4 h-4 bg-green-500 border-2 border-white dark:border-gray-900 rounded-full"></span>
           </div>
-          <h2 className="text-lg font-semibold text-blue-600 mt-3">
-            {user?.name || "loading..."}
-          </h2>
+          <Link to={`/${user?.name}/${user?.id}/profile`}>
+            <h2 className="text-lg font-semibold text-blue-600 mt-3">
+              {user?.name || "loading..."}
+            </h2>
+          </Link>
         </div>
 
         {/* Navigation Section */}

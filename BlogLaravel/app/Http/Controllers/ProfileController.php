@@ -6,6 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
+
 
 class ProfileController extends Controller
 {
@@ -30,32 +32,31 @@ class ProfileController extends Controller
             'profile_img',
             'profile_status',
             'description',
+            'about',
             'created_at'
         ]);
 
+
         // Get followers and following users
-        $followers = $user->followers()->select('id', 'name', 'profile_img')->get();
-        $following = $user->following()->select('id', 'name', 'profile_img')->get();
+        $followers = $user->followers()->count();
+        $following = $user->following()->count();
 
         return response()->json([
             "user" => $userData,
-            "followers_count" => $followers->count(),
-            "following_count" => $following->count(),
-            "followers" => $followers,
-            "following" => $following
+            "followers_count" => $followers,
+            "following_count" => $following,
         ]);
     }
 
 
+
     public function update(Request $request, $id)
     {
-
         $request->validate([
-            'name'   => ["required", "min:3"],
-            'email'  => ["required", "email", "unique:users,email," . $id], // ignore current user
+            'name' => ["required", "min:3"],
             'profile_img' => ["nullable", "image"],
-            'profile_status' => ["required"],
-            'description' => ["nullable", "max:255"],
+            'description' => ["nullable"],
+            'about' => ["nullable"],
         ]);
 
         $user = User::findOrFail($id);
@@ -64,34 +65,31 @@ class ProfileController extends Controller
             return response()->json(['message' => 'Unauthorized'], 403);
         }
 
+        if ($request->removeImage) {
+            if ($user->profile_img && Storage::disk('public')->exists($user->profile_img)) {
+                Storage::disk('public')->delete($user->profile_img);
+            }
+            $user->profile_img = null;
+        }
 
         if ($request->hasFile('profile_img')) {
             if ($user->profile_img && Storage::disk('public')->exists($user->profile_img)) {
                 Storage::disk('public')->delete($user->profile_img);
             }
-
-            $path = $request->file('profile_img')->store('profiles', 'public');
+            $path = $request->file('profile_img')->store('UserProfiles', 'public');
             $user->profile_img = $path;
         }
 
         $user->name = $request->name;
-        $user->email = $request->email;
-        $user->profile_status = $request->profile_status;
-        $user->description = $request->description; // can be null
+        $user->description = $request->description;
+        $user->about = $request->about;
 
+       
         $user->save();
 
         return response()->json([
             'message' => 'Profile updated successfully',
-            'user' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'profile_img' => $user->profile_img,
-                'profile_status' => $user->profile_status,
-                'description' => $user->description,
-                'created_at' => $user->created_at,
-            ]
+            'user' => $user
         ]);
     }
 }

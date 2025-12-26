@@ -6,7 +6,7 @@ import TabButton from "../TabButton";
 import PostCard from "../Post/PostCard";
 import PostContainer from "../Post/PostContainer";
 import UserCard from "../User/UserCard";
-import { user } from "../../Laravel/User";
+import { userObj } from "../../Laravel/User";
 
 function SearchPage() {
   const { query } = useParams();
@@ -35,7 +35,7 @@ function SearchPage() {
       if (activeTab === "users") {
         try {
           setLoading(true);
-          const response = await user.getSearchedUser(query);
+          const response = await userObj.getSearchedUser(query);
           if (response.success) {
             setUsers(response.data);
             console.log(users);

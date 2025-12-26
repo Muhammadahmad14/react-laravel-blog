@@ -24,7 +24,7 @@ class FollowerController extends Controller
         } elseif ($authFollowsProfile) {
             $status = 'Following';
         } elseif ($profileFollowsAuth) {
-            $status = 'Follow Back';
+            $status = 'Followed';
         }
 
         return response()->json([

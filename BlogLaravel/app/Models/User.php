@@ -32,12 +32,12 @@ class User extends Authenticatable
     ];
 
     public function toSearchableArray()
-{
-    return [
-        'name' => $this->name,
-        'email'  => $this->email,
-    ];
-}
+    {
+        return [
+            'name' => $this->name,
+            'email'  => $this->email,
+        ];
+    }
 
 
     /**
@@ -113,4 +113,24 @@ class User extends Authenticatable
         // Users this user follows
         return $this->belongsToMany(User::class, 'followers', 'follower_id', 'following_id');
     }
+
+    // public function checkStatus($id)
+    // {
+
+    //     $authFollowsUser = $this->following()
+    //         ->where('following_id', $id)
+    //         ->exists();
+
+    //     $userFollowsAuth =  $this->followers()
+    //         ->where('follower_id', $id)
+    //         ->exists();
+
+    //     return (
+    //         [
+    //             'auth_follows_user' => $authFollowsUser,
+    //             'user_follows_auth' => $userFollowsAuth,
+    //             'friends' => $authFollowsUser && $userFollowsAuth,
+    //         ]
+    //     );
+    // }
 }

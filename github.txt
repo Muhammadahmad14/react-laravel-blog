@@ -1,0 +1,41 @@
+cd F:\Blog-app
+# Go to your project folder
+
+git init
+# Initialize local Git repository
+
+git remote add origin https://github.com/Muhammadahmad14/react-laravel-blog.git
+# Link local repo to GitHub
+
+git branch -M main
+# Rename branch to main (GitHub default)
+
+git add .
+# Stage all files for commit
+
+git commit -m "Initial commit: Add Laravel backend and React frontend"
+# Save snapshot of project with message
+
+git push -u origin main --force
+# Push to GitHub; --force if repo already has files
+
+
+In Future
+git status
+# Check which files are changed or untracked
+
+git add .
+# Stage all changed files
+
+git commit -m "Describe your changes"
+# Save snapshot with meaningful message
+
+git push
+# Push committed changes to GitHub
+
+
+
+
+git pull origin main
+# Fetch updates from GitHub if working on another machine or someone else pushed
+

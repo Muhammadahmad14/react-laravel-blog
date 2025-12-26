@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'description' => fake()->text(),
             'role' => 'user',
-            'profile_pic_status' => fake()->randomElement(['public', 'private', 'friends']),
+            // 'profile_pic_status' => fake()->randomElement(['public', 'private', 'friends']),
         ];
     }
 
