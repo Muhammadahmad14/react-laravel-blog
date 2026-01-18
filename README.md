@@ -19,8 +19,8 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 
 ## Tech Stack
 
-- **Backend:** Laravel 10
-- **Frontend:** React 18
+- **Backend:** Laravel 12.29.0
+- **Frontend:** React 19.1.1
 - **Search:** Laravel Scout + Meilisearch
 - **Database:** MySQL
 - **Styling:** TailwindCSS
@@ -32,7 +32,7 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 
 ### Prerequisites
 
-- PHP >= 8.1
+- PHP >= 8.2.4
 - Composer
 - Node.js & npm
 - MySQL
