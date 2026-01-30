@@ -29,10 +29,8 @@ function Login() {
       const session = await authservice.login(data);
       if (session.success) {
         const userData = await authservice.getUser();
-        console.log("dispatching...");
         if (userData) {
           dispatch(login(userData));
-          console.log("dispatch success");
         }
         navigate("/");
       } else {
