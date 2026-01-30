@@ -13,8 +13,7 @@ function ForgotPassword() {
   });
 
   const onSubmit = (data) => {
-    console.log("Email submitted:", data.email);
-    // Here you can call your API to send reset password link
+    
   };
 
   return (
