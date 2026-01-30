@@ -17,8 +17,6 @@ function ConfirmPassword() {
 
   const password = watch("password");
   const onSubmit = (data) => {
-    console.log("Email submitted:", data);
-    // Here you can call your API to send reset password link
   };
 
   return (
