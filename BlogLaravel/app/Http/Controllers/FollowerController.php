@@ -67,7 +67,7 @@ class FollowerController extends Controller
             $authUser->following()->attach($targetUser->id);
         }
 
-        // 🔥 return updated status
+
         $status = $this->getFollowStatus($authUser, $targetUser);
 
         return response()->json([
