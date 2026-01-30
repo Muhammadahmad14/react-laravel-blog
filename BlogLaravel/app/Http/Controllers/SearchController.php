@@ -33,7 +33,7 @@ class SearchController extends Controller
 
         $users = User::search($query)->get();
 
-        // return view('results', compact('posts', 'users', 'query'));
+        
         return response()->json([
             'users' => $users
         ]);
