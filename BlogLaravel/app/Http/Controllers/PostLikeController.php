@@ -12,7 +12,6 @@ class PostLikeController extends Controller
         $user = $request->user();
         $post = Post::findOrFail($id);
         if ($user->hasLiked($id)) {
-            // Use User model's unlike method
             $user->unlike($id);
             return response()->json([
                 "message" => "Unliked the post",
@@ -20,10 +19,7 @@ class PostLikeController extends Controller
                 "total_likes" => $post->likeCount()
             ]);
         }
-
-        // Use User model's like method
         $user->like($id);
-
         return response()->json([
             "message" => "Liked the post",
             "liked" => true,
