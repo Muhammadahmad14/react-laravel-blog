@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Send } from "lucide-react";
+import { BadgeCheck, Send } from "lucide-react";
 import CommentsModel from "./CommentsModel";
 import LikeButton from "./LikeButton";
 import { service } from "../../Laravel/Post";
@@ -68,17 +68,21 @@ function PostCard({ post, onDeleted }) {
             onDeleted={onDeleted}
             onHide={() => setOpenCard(false)}
           />
-
           <div className="flex items-center">
             <UserMiniCard user={post.user} />
-            <div className="ml-3 text-sm">
+            <div className="flex items-center gap-2 ml-3 text-sm">
               <Link
                 to={`/${post.user.name}/${post.user.id}/profile`}
                 className="font-semibold text-slate-800 dark:text-slate-100"
               >
                 {post.user.name}
               </Link>
-              <div className="text-slate-500">{postDate}</div>
+              {post.user.has_blue_tick ? (
+                <span className="flex items-center justify-center w-5 h-5 bg-blue-700 rounded-full border border-white shadow-sm">
+                  <BadgeCheck className="w-4 h-4 text-white" />
+                </span>
+              ) : null}
+              <div className="text-slate-500 text-xs">{postDate}</div>
             </div>
           </div>
         </div>
@@ -86,11 +90,13 @@ function PostCard({ post, onDeleted }) {
         {/* Image */}
         {post.image && (
           <div className="h-56 sm:h-64 overflow-hidden mx-2 rounded-md">
-            <img
-              src={`${basePath}/${post.image}`}
-              alt="post"
-              className="w-full h-full object-cover"
-            />
+            <Link to={`${basePath}/${post.image}`}>
+              <img
+                src={`${basePath}/${post.image}`}
+                alt="post"
+                className="w-full h-full object-cover"
+              />
+            </Link>
           </div>
         )}
 
@@ -108,9 +114,7 @@ function PostCard({ post, onDeleted }) {
           {tags &&
             tags.map((tag) => (
               <Link to={`/tag/${tag.name}`} key={tag.id}>
-                <span
-                  className="inline-block mr-2 text-sm text-cyan-600 dark:text-cyan-400"
-                >
+                <span className="inline-block mr-2 text-sm text-cyan-600 dark:text-cyan-400">
                   #{tag.name}
                 </span>
               </Link>

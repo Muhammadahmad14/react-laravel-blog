@@ -1,0 +1,10 @@
+export { default as HomePage } from "./HomePgae";
+export { default as Post } from "./Post";
+export { default as TagsPostsPage } from "./TagsPostsPage";
+export { default as EditPost } from "./EditPost";
+export { default as SearchPage } from "./SearchPage";
+export { default as SettingPage } from "./SettingPage";
+export { default as FollowPage } from "./FollowPage";
+export { default as PaymentPage } from "./PaymentPage";
+export { default as SuccessPage } from "./SuccessPage";
+export { default as NotFound } from "./NotFound";

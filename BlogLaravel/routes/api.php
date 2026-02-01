@@ -1,19 +1,29 @@
 <?php
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ManageCommentController;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowerController;
+use App\Http\Controllers\ForgetPasswordController;
+use App\Http\Controllers\Payment\SubscriptionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostLikeController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\user\SettingController;
-use Faker\Guesser\Name;
+use App\Http\Middleware\isAdmin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\ManageUserController;
+use App\Http\Controllers\Admin\ManagePostController;
+use App\Http\Controllers\Admin\SettingController as AdminSettingController;
+use App\Http\Controllers\Admin\TagController as AdminTagController;
 
-
-// user routes
+// Google 
+Route::get('/auth/google', [SocialiteController::class, 'googleLogin']);
+Route::get('/auth/google-callback', [SocialiteController::class, 'authgoogle']);
 // Auth Routes
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register']);
@@ -21,13 +31,12 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::middleware("auth:sanctum")->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get("/me", function (Request $request) {
-        return response()->json([
-            'user' =>  $request->user()
-        ]);
+        return $request->user();
     });
 });
 
-
+Route::post('/subscribe', [SubscriptionController::class, 'createSubscription'])->middleware("auth:sanctum");
+Route::post('/stripe/webhook', [SubscriptionController::class, 'handleWebhook']);
 
 // user profile routes
 Route::prefix('profile')->middleware('auth:sanctum')->group(function () {
@@ -95,3 +104,73 @@ Route::middleware("auth:sanctum")->group(function () {
     Route::get("/posts/{query}/search-result", [SearchController::class, 'Posts_Search']);
     Route::get("/users/{query}/search-result", [SearchController::class, 'users_Search']);
 });
+
+
+Route::prefix('forget-password')->group(function () {
+    Route::post('/send-otp', [ForgetPasswordController::class, 'sendOtp']);
+    Route::post('/verify-otp', [ForgetPasswordController::class, 'verifyOtp']);
+    Route::post('/reset', [ForgetPasswordController::class, 'resetPassword']);
+});
+
+
+
+
+// admin routes
+Route::middleware(['auth:sanctum', 'isAdmin'])
+    ->prefix('admin')
+    ->group(function () {
+        Route::get('/dashboard', DashboardController::class);
+
+        // Users
+        Route::get('/users', [ManageUserController::class, 'index']);
+        Route::get('/users/search', [ManageUserController::class, 'searchUser']);
+        Route::get('/users/verified/transactions', [ManageUserController::class, 'verifiedUsersTransactions']);
+        Route::patch('/users/{id}/status', [ManageUserController::class, 'changeStatus']);
+        Route::patch('/users/{id}/role', [ManageUserController::class, 'changeRole']);
+
+        // Posts
+        Route::get('/posts', [ManagePostController::class, 'index']);
+        Route::post('/posts', [ManagePostController::class, 'store']);
+        Route::get('/posts/{slug}', [ManagePostController::class, 'show']);
+        Route::get('/posts/tag/{tag}', [ManagePostController::class, 'postByTag']);
+        Route::patch('/posts/{id}', [ManagePostController::class, 'update']);
+        Route::delete('/posts/{id}', [ManagePostController::class, 'destroy']);
+        Route::get('/posts/stats/yearly', [ManagePostController::class, 'yearlyPosts']);
+        Route::get('/posts/search/{query}', [ManagePostController::class, 'searchPosts']);
+
+        // Comments
+        Route::get('/posts/{postId}/comments', [CommentController::class, 'index']);
+        Route::patch('/comments/{id}', [CommentController::class, 'update']);
+        Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+
+        // Tags
+        Route::get('/tags', [AdminTagController::class, 'index']);
+        Route::post('/tags', [AdminTagController::class, 'store']);
+        Route::patch('/tags/{id}', [AdminTagController::class, 'update']);
+        Route::delete('/tags/{id}', [AdminTagController::class, 'destroy']);
+
+
+        // Users
+        Route::get('/users', [ManageUserController::class, 'index']);
+        Route::get('/users/search', [ManageUserController::class, 'searchUser']);
+        Route::get('/users/verified/transactions', [ManageUserController::class, 'verifiedUsersTransactions']);
+        Route::patch('/users/{id}/status', [ManageUserController::class, 'changeStatus']);
+        Route::patch('/users/{id}/role', [ManageUserController::class, 'changeRole']);
+
+        // Posts
+        Route::get('/posts', [ManagePostController::class, 'index']);
+        Route::post('/posts', [ManagePostController::class, 'store']);
+        Route::get('/posts/{slug}', [ManagePostController::class, 'show']);
+        Route::get('/posts/tag/{tag}', [ManagePostController::class, 'postByTag']);
+        Route::patch('/posts/{id}', [ManagePostController::class, 'update']);
+        Route::delete('/posts/{id}', [ManagePostController::class, 'destroy']);
+        Route::get('/posts/stats/yearly', [ManagePostController::class, 'yearlyPosts']);
+        Route::get('/posts/search/{query}', [ManagePostController::class, 'searchPosts']);
+
+        // Comments
+        Route::get('/posts/{postId}/comments', [ManageCommentController::class, 'index']);
+        Route::patch('/comments/{id}', [ManageCommentController::class, 'update']);
+        Route::delete('/comments/{id}', [ManageCommentController::class, 'destroy']);
+
+        Route::patch('/settings/change-password', [AdminSettingController::class, 'changePassword']);
+    });

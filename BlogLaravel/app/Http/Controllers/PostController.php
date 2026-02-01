@@ -15,7 +15,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with([
-            'user:id,name,profile_img',
+            'user:id,name,profile_img,has_blue_tick',
             'comments.user:id,name,profile_img',
             'tags:id,name'
         ])
@@ -35,7 +35,7 @@ class PostController extends Controller
     public function getUserPosts($id)
     {
         $posts = Post::with([
-            'user:id,name,profile_img',
+            'user:id,name,profile_img,has_blue_tick',
             'comments.user:id,name,profile_img',
             'tags:id,name'
         ])
@@ -123,12 +123,11 @@ class PostController extends Controller
     }
 
 
-    // show (single post by slug)
     public function show($slug)
     {
         $post = Post::with([
-            'user:id,name,profile_img', // <-- add profile_img here
-            'comments.user:id,name,profile_img', // optional if you want comment users' images
+            'user:id,name,profile_img', 
+            'comments.user:id,name,profile_img', 
             'tags:id,name',
             'likes.user:id,name'
         ])
@@ -148,7 +147,7 @@ class PostController extends Controller
     {
         $attributes = $request->validate([
             'title' => ['required'],
-            'body'  => ['required', 'min:10'],
+            'body'  => ['required'],
             'image' => ['sometimes', 'nullable', 'image'],
             'tags' => ['nullable', 'string']
         ]);

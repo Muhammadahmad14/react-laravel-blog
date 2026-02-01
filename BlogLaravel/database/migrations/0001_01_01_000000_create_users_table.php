@@ -20,10 +20,13 @@ return new class extends Migration
             $table->enum('profile_status',['public','private','friends'])->default('public');
             $table->string('description')->nullable();
             $table->string('about')->nullable();
+            $table->enum('status',['active','blocked'])->default('active');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+
+            $table->fullText(['name','description','about']);
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {

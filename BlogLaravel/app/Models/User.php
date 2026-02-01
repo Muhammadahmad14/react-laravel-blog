@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Scout\Searchable;
 
@@ -23,12 +22,14 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'google_id',
         'name',
         'email',
         'password',
         'role',
         'profile_img',
         'profile_pic_status',
+        'has_blue_tick',
     ];
 
     public function toSearchableArray()
@@ -63,6 +64,16 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
     }
 
     public function posts(): HasMany

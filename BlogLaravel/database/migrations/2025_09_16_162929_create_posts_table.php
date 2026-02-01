@@ -19,8 +19,11 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('body');
             $table->string('image')->nullable();
+            $table->enum('status', ["approved", 'block'])->default('approved');
             $table->enum('post_status', ['public', 'private', 'friends'])->default('public');
             $table->timestamps();
+
+            $table->fullText(['title', 'body']);
         });
     }
 

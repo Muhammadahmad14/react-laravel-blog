@@ -2,7 +2,6 @@ import axios from "axios";
 
 class AuthService {
   APP_URL = "http://127.0.0.1:8000/api";
-  
 
   // REGISTER
   async register({ name, email, password }) {
@@ -82,7 +81,7 @@ class AuthService {
           headers: {
             Authorization: `Bearer ${token}`,
           },
-        }
+        },
       );
 
       localStorage.removeItem("token");
@@ -106,6 +105,67 @@ class AuthService {
   // CHECK IF LOGGED IN
   isLoggedIn() {
     return localStorage.getItem("token");
+  }
+
+  async sendOtp(email) {
+    try {
+      const response = await axios.post(
+        `${this.APP_URL}/forget-password/send-otp`,
+        { email },
+      );
+      return {
+        success: true,
+        message: response.data.message,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Something went wrong",
+      };
+    }
+  }
+
+  async verifyOtp(otp) {
+    const email = localStorage.getItem("email");
+    try {
+      const response = await axios.post(
+        `${this.APP_URL}/forget-password/verify-otp`,
+        {email, otp },
+      );
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "OTP verification failed",
+      };
+    }
+  }
+
+  async resetPassword(password, password_confirmation) {
+    const email = localStorage.getItem("email");
+    try {
+      const response = await axios.post(
+        `${this.APP_URL}/forget-password/reset`,
+        {
+          email,
+          password,
+          password_confirmation,
+        },
+      );
+
+      return {
+        success: true,
+        message: response.data.message,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error.response?.data?.message || "Password reset failed",
+      };
+    }
   }
 }
 

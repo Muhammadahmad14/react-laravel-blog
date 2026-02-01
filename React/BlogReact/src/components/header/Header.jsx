@@ -30,11 +30,6 @@ function Header() {
       icon: <User size={20} />,
       to: user ? `/${user.name}/${user.id}/profile` : "/login",
     },
-    {
-      name: "Followers",
-      icon: <Users size={20} />,
-      to: `/follower`,
-    },
     { name: "Setting", icon: <Settings size={20} />, to: "/setting" },
   ];
 
@@ -42,14 +37,14 @@ function Header() {
     <>
       {/* --- DESKTOP SIDEBAR --- */}
       <aside className="hidden md:flex md:flex-col md:w-64 md:h-screen sticky top-0 bg-white dark:bg-gray-900 shadow-lg z-40">
-        <div className="flex flex-col items-center py-8 border-b-2 border-gray-200 dark:border-gray-700">
+        <div className="flex flex-co items-center py-8 border-b-2 border-gray-200 dark:border-gray-700">
           <h1 className="text-2xl font-extrabold tracking-tight text-blue-600 dark:text-blue-500">
             Code<span className="text-gray-900 dark:text-white">With</span>Ahmad
           </h1>
         </div>
 
         <div className="flex-1 px-4 py-6">
-          <ul className="space-y-2 font-medium">
+          <ul className="space-y-4 font-medium">
             {navbarlg.map((item) => (
               <li key={item.name}>
                 <NavLink
@@ -72,7 +67,9 @@ function Header() {
             <li>
               <button
                 onClick={logout}
-                className="flex items-center gap-2 px-4 py-2 w-full text-left text-gray-700 dark:text-gray-200 hover:bg-red-600 hover:text-white rounded-lg transition-all"
+                className="flex items-center gap-2 px-4 py-2 w-full text-left text-gray-700
+                 dark:text-gray-200 hover:bg-red-600 hover:text-white 
+                 rounded-lg transition-all cursor-pointer"
               >
                 <LogOut size={20} />
                 <span>Log Out</span>

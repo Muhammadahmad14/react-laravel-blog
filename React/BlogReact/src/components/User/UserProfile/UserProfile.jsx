@@ -1,6 +1,6 @@
-import { Edit, Lock } from "lucide-react";
+import { BadgeCheck, Edit, Lock, Award } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { userObj } from "../../../Laravel/User";
 import Loading from "../../Loading";
 import Toast from "../../Toast";
@@ -140,7 +140,28 @@ export default function UserProfile() {
               onClick={handleDisable}
             />
           )}
-
+          {isauthor && !user?.has_blue_tick && (
+            <span className="absolute left-40  group">
+              <Link to={"/payment/plans"}>
+                <Award
+                  className="text-yellow-400 cursor-pointer"
+                  size={30}
+                  strokeWidth={2}
+                />
+              </Link>
+              <div className="absolute bottom-full mb-2 w-max p-1 px-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition">
+                Get Verified & get Blue Tick
+              </div>
+            </span>
+          )}
+          {isauthor && user?.has_blue_tick ? (
+            <span className="absolute left-35 group w-7 h-7 bg-blue-700 rounded-full border-2 border-white flex items-center justify-center shadow-md hover:bg-blue-500 transition">
+              <BadgeCheck className="w-4 h-4 text-white" />
+              <div className="absolute bottom-full mb-2 w-max p-1 px-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition">
+                Verified
+              </div>
+            </span>
+          ) : null}
           <AvatarSection
             user={user}
             profileImg={profileImg}
@@ -154,13 +175,25 @@ export default function UserProfile() {
           {!isauthor && <FollowButton userid={id} />}
 
           <form onSubmit={handleUpdate}>
-            <ProfileInput
-              ref={nameref}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              readOnly={isDisable}
-              className="text-gray-900 dark:text-white text-2xl"
-            />
+            <div className="relative mt-2 w-fit">
+              <ProfileInput
+                ref={nameref}
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                readOnly={isDisable}
+                className="text-gray-900 dark:text-white text-2xl pr-8" // add padding-right for tick
+              />
+
+              {!isauthor && user?.has_blue_tick ? (
+                <span className="absolute right-15 group top-1/2 transform -translate-y-1/2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center shadow-md">
+                  <BadgeCheck className="w-4 h-4 text-white" strokeWidth={3} />
+                  <div className="absolute bottom-full mb-2 w-max p-1 px-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition">
+                    User is Verified
+                  </div>
+                </span>
+              ) : null}
+            </div>
+
             <ProfileInput
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -194,7 +227,7 @@ export default function UserProfile() {
       </section>
       <div>
         <h2 className="text-center text-xl font-semibold text-gray-900 dark:text-gray-100">
-          {isAuthor ? "Your Posts" : "Posts"}
+          Recent Posts
         </h2>
         <UserPosts id={id} />
       </div>
