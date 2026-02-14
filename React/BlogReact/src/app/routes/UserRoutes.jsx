@@ -14,6 +14,7 @@ import {
 import PostLists from "../../components/Post/PostLists";
 import UserProfile from "../../components/User/UserProfile/UserProfile"
 import App from "../../App";
+import CancelPage from "../../pages/user/CancelPage";
 const UserRoutes = [
   {
     element: <AuthLayout/>,
@@ -32,6 +33,7 @@ const UserRoutes = [
       { path: "/user/:tab/:id", element: <FollowPage /> },
       { path: "/payment/plans", element: <PaymentPage /> },
       { path: "/success", element: <SuccessPage /> },
+      { path: "/cancel", element: <CancelPage />},
     ]},
   ],
   },

@@ -26,6 +26,9 @@ function ConfirmOtp() {
       if (response.success) {
         navigate("/confirm-password");
       }
+      else{
+        setMessage(response.error?.message || response.error);
+      }
     } catch (error) {
       setMessage(response.error?.message || response.error);
     } finally {

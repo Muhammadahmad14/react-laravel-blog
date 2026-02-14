@@ -15,26 +15,26 @@ class ManageUserController extends Controller
     public function index(Request $request)
     {
         $status = $request->query('status');
+        $search = $request->query('search');
+        $postId = $request->query('post_id');
+        $commentId = $request->query('comment_id');
+
         $users = User::withCount('posts')
             ->when($status, function ($query, $status) {
                 $query->where('status', $status);
             })
-            ->paginate(10);
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'LIKE', '%' . $search . '%');
+                });
+            })
+            ->when($postId, fn($q) => $q->whereRelation('posts', 'id', $postId))
+            ->when($commentId, fn($q) => $q->whereRelation('comments','id',$commentId))
+            ->when()
+            ->latest('created_at')
+            ->paginate(10, ['id', 'name', 'email', 'profile_img', 'has_blue_tick', 'status', 'role', 'created_at']);
         return response()->json([
             'users' => $users
-        ]);
-    }
-
-    public function searchUser(Request $request)
-    {
-        $query = $request->query('q');
-
-        $users = User::when($query, fn($q) => $q->whereFullText(['name', 'description', 'about'], $query))
-            ->withCount('posts')
-            ->paginate(10, ['id', 'name', 'role', 'profile_img', 'created_at']);
-
-        return response()->json([
-            'users' => $users,
         ]);
     }
     public function verifiedUsersTransactions()
@@ -63,7 +63,6 @@ class ManageUserController extends Controller
         }
 
         $user = User::findOrFail($id);
-
         if ($user->is($admin)) {
             return response()->json(['message' => 'You cannot modify your own account'], 403);
         }
@@ -71,18 +70,16 @@ class ManageUserController extends Controller
         $user->status = $request->status;
         $user->save();
 
-        $subject = $request->status === 'active'
-            ? "Your BlogApp Account Has Been Unblocked"
-            : "Your BlogApp Account Has Been Blocked";
+        $subjectText = $request->status === 'active'
+            ? "Your BlogApp Account Has Been Unblocked enjoy blogging again and connect with your followers"
+            : "Your BlogApp Account Has Been Blocked by the admin due to policy violations";
 
-        $message = "Hello {$user->name}, your account has been {$request->status} by the admin due to policy violations.";
-
-        Mail::to($user->email)->queue(new UserBlockMail($message, $subject));
+        $message = "Hello {$user->name},{$request->status}, {$subjectText}";
+        Mail::to($user->email)->queue(new UserBlockMail($message, $subjectText));
 
 
         return response()->json([
             'message' => 'User status updated',
-            'status' => $user->status
         ]);
     }
     public function changeRole(Request $request, $id)

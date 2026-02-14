@@ -7,7 +7,7 @@ import { login } from "../../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import GoogleLoginButton from "./GoogleLoginButton";
-import { Input, Button, Image,Checkbox } from "../../components/formComp";
+import { Input, Button, Image, Checkbox } from "../../components/formComp";
 
 function Login() {
   const [isPwdVisible, setisPwdVisible] = useState(false);
@@ -31,7 +31,13 @@ function Login() {
         if (userData) {
           dispatch(login(userData));
         }
-        navigate("/");
+        if (userData.user.role === "admin") {
+          navigate("/admin");
+          return;
+        }
+        if (userData.user.role === "user") {
+          navigate("/");
+        }
       } else {
         setError("Email or Password is wrong");
       }

@@ -19,7 +19,7 @@
         <div class="header">
             <img src="https://i.ibb.co/2N0VqgH/blogapp-icon.png" alt="BlogApp Logo">
         </div>
-        <p>{{ $messageBody }}</p>
+        <p>{{ $messageText }}</p>
         <a href="mailto:support@blogapp.com" class="btn">Contact Support</a>
         <div class="footer">
             &copy; {{ date('Y') }} BlogApp. All rights reserved.

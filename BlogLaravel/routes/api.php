@@ -115,38 +115,42 @@ Route::prefix('forget-password')->group(function () {
 
 
 
-// admin routes
-Route::middleware(['auth:sanctum', 'isAdmin'])
+// admin routes 
+Route::middleware(['auth:sanctum', isAdmin::class])
     ->prefix('admin')
     ->group(function () {
         Route::get('/dashboard', DashboardController::class);
 
         // Users
-        Route::get('/users', [ManageUserController::class, 'index']);
-        Route::get('/users/search', [ManageUserController::class, 'searchUser']);
-        Route::get('/users/verified/transactions', [ManageUserController::class, 'verifiedUsersTransactions']);
-        Route::patch('/users/{id}/status', [ManageUserController::class, 'changeStatus']);
-        Route::patch('/users/{id}/role', [ManageUserController::class, 'changeRole']);
+        Route::prefix('users')->controller(ManageUserController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::get('/verified/transactions', 'verifiedUsersTransactions');
+            Route::put('/{id}/status', 'changeStatus');
+            Route::put('/{id}/role', 'changeRole');
+        });
 
         // Posts
-        Route::get('/posts', [ManagePostController::class, 'index']);
-        Route::post('/posts', [ManagePostController::class, 'store']);
-        Route::get('/posts/{slug}', [ManagePostController::class, 'show']);
-        Route::get('/posts/tag/{tag}', [ManagePostController::class, 'postByTag']);
-        Route::patch('/posts/{id}', [ManagePostController::class, 'update']);
-        Route::delete('/posts/{id}', [ManagePostController::class, 'destroy']);
-        Route::get('/posts/stats/yearly', [ManagePostController::class, 'yearlyPosts']);
-        Route::get('/posts/search/{query}', [ManagePostController::class, 'searchPosts']);
+        Route::prefix('posts')->controller(ManagePostController::class)->group(function () {
+            Route::get('/', 'index');
+            Route::post('/', 'store');
+            Route::get('/stats/yearly', 'yearlyPosts');
+            Route::get('/tag/{tag}', 'postByTag');
+            Route::get('/{slug}', 'show');
+            Route::put('/{id}', 'update');
+            Route::delete('/{id}', 'destroy');
+        });
+
 
         // Comments
-        Route::get('/posts/{postId}/comments', [CommentController::class, 'index']);
-        Route::patch('/comments/{id}', [CommentController::class, 'update']);
-        Route::delete('/comments/{id}', [CommentController::class, 'destroy']);
+        Route::get('/comments/{id}', [ManageCommentController::class, 'index']);
+        Route::put('/comments/{id}', [ManageCommentController::class, 'update']);
+        Route::delete('/comments/{id}', [ManageCommentController::class, 'destroy']);
 
         // Tags
         Route::get('/tags', [AdminTagController::class, 'index']);
+        Route::get('/tags/{id}', [AdminTagController::class, 'show']);
         Route::post('/tags', [AdminTagController::class, 'store']);
-        Route::patch('/tags/{id}', [AdminTagController::class, 'update']);
+        Route::put('/tags/{id}', [AdminTagController::class, 'update']);
         Route::delete('/tags/{id}', [AdminTagController::class, 'destroy']);
 
 

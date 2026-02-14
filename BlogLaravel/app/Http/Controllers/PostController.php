@@ -19,6 +19,7 @@ class PostController extends Controller
             'comments.user:id,name,profile_img',
             'tags:id,name'
         ])
+            ->where('status', 'published')
             ->withCount(['likes', 'comments'])
             ->withExists([
                 'likes as liked_by_user' => function ($q) {
@@ -108,7 +109,10 @@ class PostController extends Controller
                 $tagName = trim($tagName);
                 if ($tagName === '') continue;
 
-                $tag = Tag::firstOrCreate(['name' => $tagName]);
+                $tag = Tag::firstOrCreate(
+                    ['name' => $tagName],          
+                    ['user_id' => Auth::id()] 
+                );
                 $tagIds[] = $tag->id;
             }
         }
@@ -126,8 +130,8 @@ class PostController extends Controller
     public function show($slug)
     {
         $post = Post::with([
-            'user:id,name,profile_img', 
-            'comments.user:id,name,profile_img', 
+            'user:id,name,profile_img',
+            'comments.user:id,name,profile_img',
             'tags:id,name',
             'likes.user:id,name'
         ])

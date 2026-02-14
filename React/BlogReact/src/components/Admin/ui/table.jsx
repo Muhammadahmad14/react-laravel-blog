@@ -109,7 +109,7 @@ function TableHead(props) {
       className="
         px-6 py-4 text-left
         text-[11px] font-bold uppercase tracking-widest
-        text-gray-500 dark:text-gray-400
+        text-gray-500 dark:text-gray-200
       "
       {...props}
     />

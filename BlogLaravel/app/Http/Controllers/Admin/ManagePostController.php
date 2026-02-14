@@ -7,7 +7,6 @@ use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -17,18 +16,44 @@ class ManagePostController extends Controller
     public function index(Request $request)
     {
         $status = $request->query('status');
+        $search = trim($request->query('search', ''));
+        $tag = $request->query('tag');
+        $userID = $request->query('user_id');
+        $term   = '%' . $search . '%';
+
         $posts = Post::with('user:id,name')
             ->withCount(['likes', 'comments'])
             ->when($status, function ($query, $status) {
                 $query->where('status', $status);
             })
-            ->latest()
-            ->paginate(10, ['id', 'title', 'body', 'image', 'user_id', 'created_at']);
-
+            ->when($tag, fn($q) => $q->whereRelation('tags', 'name', $tag))
+            ->when($userID, fn($q) => $q->whereRelation('user', 'id', $userID))
+            ->when($search, function ($query) use ($term) {
+                $query->where(function ($q) use ($term) {
+                    $q->where('title', 'LIKE', $term)
+                        ->orWhere('body', 'LIKE', $term)
+                        ->orWhereHas('user', function ($userQuery) use ($term) {
+                            $userQuery->where('name', 'LIKE', $term);
+                        });
+                });
+            })
+            ->latest('created_at')
+            ->paginate(10, [
+                'id',
+                'title',
+                'body',
+                'image',
+                'status',
+                'user_id',
+                'created_at',
+                'slug'
+            ]);
         return response()->json([
             'posts' => $posts
         ]);
     }
+
+
 
     public function store(Request $request)
     {
@@ -80,10 +105,8 @@ class ManagePostController extends Controller
     public function show($slug)
     {
         $post = Post::with([
-            'user:id,name',
             'tags:id,name',
         ])
-            ->withCount(['likes', 'comments'])
             ->where('slug', $slug)
             ->firstOrFail();
 
@@ -112,6 +135,7 @@ class ManagePostController extends Controller
         $attributes = $request->validate([
             'title' => ['required'],
             'body'  => ['required', 'min:10'],
+            'status' => ['required'],
             'image' => ['sometimes', 'nullable', 'image'],
             'tags' => ['nullable', 'string']
         ]);
@@ -172,43 +196,6 @@ class ManagePostController extends Controller
             'post'    => $post
         ], 200);
     }
-
-    public function yearlyPosts()
-    {
-        $year = now()->year;
-        $posts = Post::select(
-            DB::raw('MONTH(created_at) as month'),
-            DB::raw('COUNT(*) as total')
-        )
-            ->whereYear('created_at', $year)
-            ->groupBy('month')
-            ->orderBy('month')
-            ->get();
-
-        $monthlyData = array_fill(1, 12, 0);
-        foreach ($posts as $post) {
-            $monthlyData[$post->month] = $post->total;
-        }
-        return response()->json([
-            'year' => $year,
-            'data' => array_values($monthlyData),
-        ]);
-    }
-    public function searchPosts($query)
-    {
-        $query = trim($query);
-
-        $posts = Post::select('posts.*', DB::raw("MATCH(title, body) AGAINST(? IN NATURAL LANGUAGE MODE) AS relevance", [$query]))
-            ->whereFullText(['title', 'body'], $query)
-            ->with('user:id,name')
-            ->orderByDesc('relevance')
-            ->paginate(10, ['id', 'title', 'body', 'image', 'user_id', 'created_at']);
-
-        return response()->json([
-            'posts' => $posts,
-        ]);
-    }
-
     public function destroy(Request $request, $id)
     {
         $post = Post::findOrFail($id);
@@ -221,13 +208,10 @@ class ManagePostController extends Controller
         }
 
 
-        if ($request->boolean('removeImage')) {
-            if ($post->image && Storage::disk('public')->exists($post->image)) {
-                Storage::disk('public')->delete($post->image);
-            }
-            $post->image = null;
+        if ($post->image && Storage::disk('public')->exists($post->image)) {
+            Storage::disk('public')->delete($post->image);
         }
-
+        $post->image = null;
 
         $post->delete();
 

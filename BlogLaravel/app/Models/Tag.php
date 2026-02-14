@@ -12,12 +12,16 @@ class Tag extends Model
 
     protected $fillable = [
         'name',
+        'user_id',
     ];
 
-    public function posts() : BelongsToMany
+    public function posts(): BelongsToMany
     {
         return $this->belongsToMany(Post::class);
-    } 
+    }
 
-    
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

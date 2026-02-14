@@ -75,6 +75,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class);
     }
+    public function tags()
+    {
+        return $this->hasMany(Tag::class);
+    }
 
     public function posts(): HasMany
     {

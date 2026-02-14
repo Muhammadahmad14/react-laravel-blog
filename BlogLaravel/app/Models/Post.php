@@ -21,7 +21,8 @@ class Post extends Model
         'title',
         'slug',
         'body',
-        'image'
+        'image',
+        'status',
     ];
     public function toSearchableArray()
     {

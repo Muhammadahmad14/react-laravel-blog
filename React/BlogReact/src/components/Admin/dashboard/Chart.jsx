@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import  { useEffect, useMemo, useState } from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -23,7 +23,7 @@ ChartJS.register(
   Legend,
 );
 
-function Chart() {
+function Chart({MontlyPosts}) {
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
@@ -38,11 +38,24 @@ function Chart() {
 
   const data = useMemo(() => {
     return {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"],
+      labels: [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ],
       datasets: [
         {
-          label: "Revenue",
-          data: [200, 300, 400, 350, 500, 450, 600, 100],
+          label: "Posts Created",
+          data: MontlyPosts || [],
           borderColor: isDark ? "#60A5FA" : "#2563EB",
           backgroundColor: "rgba(59,130,246,0.15)",
           tension: 0.35,

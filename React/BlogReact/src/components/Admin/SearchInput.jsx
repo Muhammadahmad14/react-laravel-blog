@@ -1,7 +1,7 @@
 import { Search } from "lucide-react";
 import { useState } from "react";
 
-function SearchInput({ placeholder }) {
+function SearchInput({ placeholder, onChange,value }) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
@@ -25,6 +25,8 @@ function SearchInput({ placeholder }) {
           type="text"
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           className="flex-1 pl-9 sm:pl-10 pr-3 sm:pr-4 py-2.5 sm:py-3
             text-sm sm:text-base
@@ -35,7 +37,7 @@ function SearchInput({ placeholder }) {
         />
 
         <button
-          type="submit"
+          type="button"
           className="h-full px-4 sm:px-5 bg-blue-600 hover:bg-blue-700
             text-white transition-colors
             flex items-center justify-center min-h-[40px] sm:min-h-[44px]"

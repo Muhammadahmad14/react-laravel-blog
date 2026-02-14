@@ -3,29 +3,28 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserBlockMail extends Mailable implements ShouldQueue
+class UserBlockMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $messageBody;
-    public $subjectLine;
+    public string $messageText;
+    public string $subjectText;
 
-    public function __construct($messageBody, $subjectLine)
+    public function __construct($messageText, $subjectText)
     {
-        $this->messageBody = $messageBody;
-        $this->subjectLine = $subjectLine;
+        $this->messageText = $messageText;
+        $this->subjectText = $subjectText;
     }
 
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->subjectLine,
+            subject: $this->subjectText
         );
     }
 
@@ -34,10 +33,5 @@ class UserBlockMail extends Mailable implements ShouldQueue
         return new Content(
             view: 'mail.user_blocked',
         );
-    }
-
-    public function attachments(): array
-    {
-        return [];
     }
 }

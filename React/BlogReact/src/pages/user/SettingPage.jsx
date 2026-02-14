@@ -23,7 +23,7 @@ function SettingPage() {
     setToast({ show: true, message, type });
   };
 
-  const isSocialUser = user?.google_id; // if user has google_id, it's a Google login
+  const isSocialUser = user?.google_id;
 
   return (
     <>
@@ -39,8 +39,6 @@ function SettingPage() {
         <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
           Settings
         </h1>
-
-        {/* Change Email */}
         <Accordion
           index={0}
           openIndex={openIndex}
@@ -62,8 +60,6 @@ function SettingPage() {
             />
           )}
         </Accordion>
-
-        {/* Change Password */}
         <Accordion
           index={1}
           openIndex={openIndex}
@@ -85,8 +81,6 @@ function SettingPage() {
             />
           )}
         </Accordion>
-
-        {/* Profile Visibility */}
         <Accordion
           index={2}
           openIndex={openIndex}

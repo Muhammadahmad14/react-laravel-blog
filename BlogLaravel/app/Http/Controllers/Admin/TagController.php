@@ -3,26 +3,32 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $tags = Tag::withCount('posts')
-            ->orderBy('posts_count', 'desc')
-            ->get();
+        $search = $request->search;
 
-        return response()->json([
-            'tags' => $tags
-        ]);
+        $tags = Tag::with('user:id,name')
+            ->withCount('posts')
+            ->when(
+                $search,
+                fn($q) =>
+                $q->where('name', 'like', "%$search%")
+            )
+            ->orderByDesc('posts_count')
+            ->paginate(5, ['id', 'name', 'created_at']);
+
+        return response()->json(['tags' => $tags]);
     }
+
     public function store(Request $request)
     {
         $request->validate([
-            'tags' => ['required', 'array'],
+            'tags' => ['required'],
             'tags.*' => ['string', 'max:50']
         ]);
         $tags = collect($request->tags)
@@ -31,16 +37,29 @@ class TagController extends Controller
             })
             ->unique()
             ->each(function ($tag) {
-                Tag::firstOrCreate([
-                    'name' => $tag
-                ]);
+                Tag::firstOrCreate(
+                    [
+                        'name' => $tag
+                    ],
+                    [
+                        'user_id' => auth()->id()
+                    ]
+                );
             });
 
         return response()->json([
             'message' => "Successfull added",
-            // 'tags' => $tags,
         ]);
     }
+    
+    public function show($id)
+    {
+        $tag = Tag::findOrFail($id);
+        return response()->json([
+            'tag' => $tag
+        ]);
+    }
+
     public function update(Request $request, $id)
     {
         $request->validate([

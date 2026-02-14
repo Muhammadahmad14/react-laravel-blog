@@ -1,0 +1,9 @@
+export { default as DashboardPage } from "./dashboard/DashboardPage";
+export { default as EditPost } from "./post/EditPost";
+export { default as PostsPage } from "./post/PostsPage";
+export { default as AddPost } from "./post/AddPost";
+export { default as UserPage } from "./user/UserPage";
+export { default as TagsPage } from "./tag/TagsPage";
+export { default as AddTag } from "./tag/AddTag";
+export { default as EditTag } from "./tag/EditTag";
+export { default as CommentsPage } from "./comment/CommentsPage";

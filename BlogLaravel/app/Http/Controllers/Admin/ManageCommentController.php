@@ -9,17 +9,18 @@ use Illuminate\Support\Facades\Auth;
 
 class ManageCommentController extends Controller
 {
-     public function index($id)
+    public function index(Request $request, $id)
     {
-        $comments = Comment::with('user:id,name')->where('post_id', $id)
+        $comments = Comment::with('user:id,name')
+            ->where('post_id', $id)
             ->latest()
-            ->paginate(5);
+            ->paginate(5, ['id', 'body', 'user_id', 'status', 'created_at']);
 
         return response()->json([
             'comments' => $comments
         ]);
     }
-
+    
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -54,7 +55,7 @@ class ManageCommentController extends Controller
         $comment->delete();
 
         return response()->json([
-            'message' => "Successfully deleted"
+            'message' => "Comments Successfully deleted"
         ]);
     }
 }

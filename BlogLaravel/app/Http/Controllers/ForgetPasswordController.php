@@ -18,12 +18,9 @@ class ForgetPasswordController extends Controller
         ]);
 
         $user = User::where('email', $request->email)->first();
-
-        // Delete old pending OTPs
         Otp::where('user_id', $user->id)
             ->where('status', 'pending')
             ->delete();
-
         $otpCode = rand(100000, 999999);
 
         Otp::create([
@@ -33,7 +30,7 @@ class ForgetPasswordController extends Controller
             'status'      => 'pending',
         ]);
 
-        Mail::to($user->email)->send(new OtpMail($otpCode));
+        Mail::to($user->email)->queue(new OtpMail($otpCode));
 
         return response()->json([
             'message' => 'OTP sent to your email (expires in 2 minutes)'

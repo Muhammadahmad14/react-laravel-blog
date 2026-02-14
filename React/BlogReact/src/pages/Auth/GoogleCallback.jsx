@@ -17,9 +17,15 @@ function GoogleCallback() {
       try {
         const response = await authservice.getUser();
         if (response.success) {
-          console.log(response.user);
           localStorage.setItem("userData", JSON.stringify(response.user));
-          navigate("/");
+          if(response.user.role === "admin") {
+            navigate("/admin");
+            return;
+          }
+          if(response.user.role === "user") {
+            navigate("/");
+            return;
+          }
         } else {
           navigate("/login");
         }

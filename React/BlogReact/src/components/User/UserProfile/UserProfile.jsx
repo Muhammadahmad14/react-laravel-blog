@@ -101,7 +101,6 @@ export default function UserProfile() {
 
   if (loading) return <Loading />;
 
-  // Handle private profile or error message
   if (error)
     return (
       <section className="max-w-2xl mx-auto p-6 text-center text-gray-900 dark:text-white bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
