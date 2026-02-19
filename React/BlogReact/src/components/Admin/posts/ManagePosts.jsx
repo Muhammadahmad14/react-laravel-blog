@@ -21,6 +21,7 @@ function ManagePosts() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+  const [preview, setPreview] = useState(null);
   const [status, setStatus] = useState("");
   const [search, setSearch] = useState("");
   const [params] = useSearchParams();
@@ -160,8 +161,24 @@ function ManagePosts() {
                       <img
                         src={`${import.meta.env.VITE_IMAGE_PATH}/${post.image}`}
                         alt={post.title}
-                        className="w-12 h-12 rounded-lg object-cover border"
+                        className="w-12 h-12 rounded-lg object-cover border cursor-pointer"
+                        onClick={() =>
+                          setPreview(
+                            `${import.meta.env.VITE_IMAGE_PATH}/${post.image}`,
+                          )
+                        }
                       />
+                    )}
+                    {preview && (
+                      <div
+                        onClick={() => setPreview(null)}
+                        className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+                      >
+                        <img
+                          src={preview}
+                          className="max-h-[90%] max-w-[90%]"
+                        />
+                      </div>
                     )}
                   </TableCell>
                   <TableCell>
@@ -177,7 +194,9 @@ function ManagePosts() {
                   </TableCell>
                   <TableCell>{post.likes_count}</TableCell>
                   <TableCell>
-                    <Link to={`/admin/comments?post_id=${post.id}`}>{post.comments_count}</Link>
+                    <Link to={`/admin/comments?post_id=${post.id}`}>
+                      {post.comments_count}
+                    </Link>
                   </TableCell>
                   <TableCell>
                     {new Date(post.created_at).toLocaleDateString()}

@@ -1,4 +1,5 @@
 import AdminLayout from "../../components/Admin/AdminLayout";
+import ManageSetting from "../../components/Admin/setting/ManageSetting";
 import { ThemeProvider } from "../../context/ThemeContext";
 import AdminRouteLayout from "../../layouts/AdminRouteLayout";
 import {
@@ -59,6 +60,10 @@ const AdminRoutes = [
           {
             path: "comments",
             element: <CommentsPage />,
+          },
+          {
+            path: "settings",
+            element: <ManageSetting/>
           },
         ],
       },

@@ -12,6 +12,7 @@ function PostCard({ post, onDeleted }) {
   const [tags, setTags] = useState([]);
   const [openCard, setOpenCard] = useState(true);
   const [comments, setComments] = useState(post.comments || []);
+  const [preview, setPreview] = useState(null);
   const [commentText, setCommentText] = useState("");
   const [sending, setSending] = useState(false);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
@@ -90,13 +91,21 @@ function PostCard({ post, onDeleted }) {
         {/* Image */}
         {post.image && (
           <div className="h-56 sm:h-64 overflow-hidden mx-2 rounded-md">
-            <Link to={`${basePath}/${post.image}`}>
-              <img
-                src={`${basePath}/${post.image}`}
-                alt="post"
-                className="w-full h-full object-cover"
-              />
-            </Link>
+            <img
+              src={`${basePath}/${post.image}`}
+              alt="post"
+              className="w-full h-full object-cover cursor-pointer"
+              onClick={() => setPreview(`${basePath}/${post.image}`)}
+            />
+          </div>
+        )}
+
+        {preview && (
+          <div
+            onClick={() => setPreview(null)}
+            className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+          >
+            <img src={preview} className="max-h-[90%] max-w-[90%]" />
           </div>
         )}
 

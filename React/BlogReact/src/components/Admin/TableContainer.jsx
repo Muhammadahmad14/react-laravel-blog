@@ -8,16 +8,14 @@ function TableContainer({ children, text, data, search, setSearch }) {
         {text}
       </h2>
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 w-full">
-        {search && (
-          <div className="w-full md:flex-1">
-            <SearchInput
-              className="w-full"
-              placeholder="Search..."
-              value={search}
-              onChange={setSearch}
-            />
-          </div>
-        )}
+        <div className="w-full md:flex-1">
+          <SearchInput
+            className="w-full"
+            placeholder="Search..."
+            value={search}
+            onChange={setSearch}
+          />
+        </div>
 
         {data && (
           <div className="w-full md:w-auto md:min-w-[150px]">

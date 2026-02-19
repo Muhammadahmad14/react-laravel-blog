@@ -21,6 +21,7 @@ function ManageUsers() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [lastPage, setLastPage] = useState(1);
+  const [preview, setPreview] = useState(null);
   const [params] = useSearchParams();
   const postId = params.get("post_id");
   const commentId = params.get("comment_id");
@@ -53,7 +54,7 @@ function ManageUsers() {
   };
   useEffect(() => {
     getUsers(page);
-  }, [page, status, debouncedSearch,postId,commentId]);
+  }, [page, status, debouncedSearch, postId, commentId]);
 
   // update role
   const updateUserRole = async (userId, newRole) => {
@@ -192,8 +193,20 @@ function ManageUsers() {
                       <img
                         src={`${import.meta.env.VITE_IMAGE_PATH}/${user.profile_img}`}
                         alt={user.name}
-                        className="w-12 h-12 rounded-lg object-cover border"
+                        className="w-12 h-12 rounded-lg object-cover border cursor-pointer"
+                        onClick={() => setPreview(`${import.meta.env.VITE_IMAGE_PATH}/${user.profile_img}`)}
                       />
+                    )}
+                    {preview && (
+                      <div
+                        onClick={() => setPreview(null)}
+                        className="fixed inset-0 bg-black/80 flex items-center justify-center z-50"
+                      >
+                        <img
+                          src={preview}
+                          className="max-h-[90%] max-w-[90%]"
+                        />
+                      </div>
                     )}
                   </TableCell>
                   <TableCell>
@@ -230,7 +243,10 @@ function ManageUsers() {
                     />
                   </TableCell>
                   <TableCell>
-                    <Link to={`/admin/posts?user_id=${user.id}`} className="text-blue-500 hover:underline">
+                    <Link
+                      to={`/admin/posts?user_id=${user.id}`}
+                      className="text-blue-500 hover:underline"
+                    >
                       {user.posts_count}
                     </Link>
                   </TableCell>

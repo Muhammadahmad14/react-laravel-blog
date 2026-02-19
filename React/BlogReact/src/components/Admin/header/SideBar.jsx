@@ -13,10 +13,8 @@ function Sidebar({ isOpen, onClose }) {
   const links = [
     { path: "/admin", icon: LayoutDashboard, label: "Dashboard" },
     { path: "/admin/posts", icon: FileText, label: "Posts" },
-    { path: "/admin/comments", icon: MessageSquare, label: "Comments" },
     { path: "/admin/users", icon: Users, label: "Users" },
     { path: "/admin/tags", icon: Tag, label: "Tags" },
-    { path: "/admin/media", icon: ImageIcon, label: "Media" },
     { path: "/admin/settings", icon: Settings, label: "Settings" },
   ];
   return (

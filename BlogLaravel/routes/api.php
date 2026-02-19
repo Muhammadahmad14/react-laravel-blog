@@ -176,5 +176,5 @@ Route::middleware(['auth:sanctum', isAdmin::class])
         Route::patch('/comments/{id}', [ManageCommentController::class, 'update']);
         Route::delete('/comments/{id}', [ManageCommentController::class, 'destroy']);
 
-        Route::patch('/settings/change-password', [AdminSettingController::class, 'changePassword']);
+        Route::put('/settings/change-password', [AdminSettingController::class, 'changePassword']);
     });

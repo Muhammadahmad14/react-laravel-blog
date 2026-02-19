@@ -113,7 +113,7 @@ class Admin {
     }
   }
 
-  async getUsers(page = 1, status = "", search = "", postId,commentId) {
+  async getUsers(page = 1, status = "", search = "", postId, commentId) {
     const token = localStorage.getItem("token");
 
     let url = `${APP_URL}/admin/users?page=${page}`;
@@ -126,8 +126,8 @@ class Admin {
     if (postId) {
       url += `&post_id=${postId}`;
     }
-    if(commentId) {
-      url += `&comment_id=${commentId}`
+    if (commentId) {
+      url += `&comment_id=${commentId}`;
     }
 
     try {
@@ -274,7 +274,7 @@ class Admin {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         },
       );
-      return { success: true, data: response.data}
+      return { success: true, data: response.data };
     } catch (error) {
       return { success: false, error: error.response?.data || error.message };
     }
@@ -283,15 +283,31 @@ class Admin {
   async deleteComment(id) {
     try {
       const token = localStorage.getItem("token");
-      const response = axios.delete(
-        `${APP_URL}/admin/comments/${id}`,
+      const response = axios.delete(`${APP_URL}/admin/comments/${id}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error.response?.data || error.message };
+    }
+  }
+
+  async changePassword(current_password, new_password) {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.put(
+        `${APP_URL}/admin/settings/change-password`,
+        {
+          current_password,
+          new_password,
+        },
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         },
       );
-      return { success: true, data: response.data}
+      return { success: true, data: response.data.message };
     } catch (error) {
-      return { success: false, error: error.response?.data || error.message };
+      return { success: false, error: error.response?.data?.errors };
     }
   }
 }

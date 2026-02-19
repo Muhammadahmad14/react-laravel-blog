@@ -12,7 +12,7 @@ class SettingController extends Controller
     public function changePassword(Request $request)
     {
         $request->validate([
-            'password' => ['required'],
+            'current_password' => ['required'],
             'new_password' => ['required', 'min:8']
         ]);
         /** @var \App\Models\User $user */
@@ -22,18 +22,18 @@ class SettingController extends Controller
                 'message' => 'UnAuthorized'
             ], 403);
         }
-        if (!Hash::check($user->password, $request->password)) {
+        if (! Hash::check($request->current_password, $user->password)) {
             return response()->json([
                 'errors' => [
                     'password' => ['Password is not correct']
                 ]
-            ]);
+            ],422);
         }
         $user->password = $request->new_password;
         $user->save();
 
         return response()->json([
-            'message' => 
+            'message' =>
             "Successfully Changed"
         ]);
     }
