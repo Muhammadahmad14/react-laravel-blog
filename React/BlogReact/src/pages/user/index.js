@@ -8,3 +8,4 @@ export { default as FollowPage } from "./FollowPage";
 export { default as PaymentPage } from "./PaymentPage";
 export { default as SuccessPage } from "./SuccessPage";
 export { default as NotFound } from "./NotFound";
+export { default as NotificationsPage } from "./NotifcationsPage";

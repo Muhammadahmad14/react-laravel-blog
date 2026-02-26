@@ -39,7 +39,12 @@ function Login() {
           navigate("/");
         }
       } else {
+        if(session.status === 401){
         setError("Email or Password is wrong");
+        }
+        if(session.status === 403){
+          setError(session.message)
+        }
       }
     } catch (error) {
       setError("something went wrong");

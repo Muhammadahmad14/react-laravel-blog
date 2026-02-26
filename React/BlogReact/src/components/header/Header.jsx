@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Users, User, LogOut, Search, Settings } from "lucide-react";
+import { Home, Users, User, LogOut, Search, Settings, BellIcon } from "lucide-react";
 import { authservice } from "../../Laravel/Auth";
 import SearchBar from "../SearchBar";
 import { useLogout } from "../LogoutBtn";
@@ -30,6 +30,7 @@ function Header() {
       icon: <User size={20} />,
       to: user ? `/${user.name}/${user.id}/profile` : "/login",
     },
+    { name: "Notifications", icon: <BellIcon size={20} />, to: "/notifications" },
     { name: "Setting", icon: <Settings size={20} />, to: "/setting" },
   ];
 

@@ -29,11 +29,8 @@ function Navbar({ onMenuClick }) {
             className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             title={isDark ? "Light Mode" : "Dark Mode"}
           >
-            {isDark ? (
-              <Sun size={20} className="text-yellow-500" />
-            ) : (
+              {/* <Sun size={20} className="text-yellow-500" /> */}
               <Moon size={20} className="text-gray-700 dark:text-gray-200" />
-            )}
           </button>
 
           <button className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors relative">

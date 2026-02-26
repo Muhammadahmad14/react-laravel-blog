@@ -10,6 +10,7 @@ import {
   FollowPage,
   PaymentPage,
   SuccessPage,
+  NotificationsPage,
 } from "../../pages/user";
 import PostLists from "../../components/Post/PostLists";
 import UserProfile from "../../components/User/UserProfile/UserProfile"
@@ -34,6 +35,7 @@ const UserRoutes = [
       { path: "/payment/plans", element: <PaymentPage /> },
       { path: "/success", element: <SuccessPage /> },
       { path: "/cancel", element: <CancelPage />},
+      { path: "/notifications", element: <NotificationsPage />},
     ]},
   ],
   },

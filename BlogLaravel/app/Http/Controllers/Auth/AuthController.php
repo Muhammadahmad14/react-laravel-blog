@@ -37,7 +37,7 @@ class AuthController extends Controller
     {
         $attributes = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required', 'min:8'],
+            'password' => ['required'], // no min:8 needed here
         ]);
 
         if (!Auth::attempt($attributes)) {
@@ -45,7 +45,15 @@ class AuthController extends Controller
                 'message' => "Invalid credentials",
             ], 401);
         }
-        $user = $request->user();
+
+        $user = auth()->user();
+
+        if ($user->status === "blocked") {
+            return response()->json([
+                "message" => "Your Account is Blocked"
+            ], 403);
+        }
+
         $token = $user->createToken('auth_token', [$user->role])->plainTextToken;
 
         return response()->json([
@@ -54,6 +62,7 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
 
     // logout user
     public function logout(Request $request)

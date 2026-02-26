@@ -1,7 +1,7 @@
 import axios from "axios";
+const APP_URL = import.meta.env.VITE_APP_URL;
 
 class User {
-  APP_URL = "http://127.0.0.1:8000/api";
   handleError(error) {
     if (error.response?.status === 422) {
       return {
@@ -27,10 +27,10 @@ class User {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `${this.APP_URL}/users/${query}/search-result`,
+        `${APP_URL}/users/${query}/search-result`,
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
+        },
       );
       return { success: true, data: response.data.users };
     } catch (error) {
@@ -41,7 +41,7 @@ class User {
   async getUserProfile(id) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${this.APP_URL}/profile/${id}`, {
+      const response = await axios.get(`${APP_URL}/profile/${id}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
 
@@ -72,15 +72,11 @@ class User {
       if (profile_img) formData.append("profile_img", profile_img);
       if (removeImage) formData.append("removeImage", removeImage);
 
-      const response = await axios.post(
-        `${this.APP_URL}/profile/${id}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${APP_URL}/profile/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       localStorage.setItem("userData", JSON.stringify(response.data.user));
       return { success: true, data: response.data };
     } catch (error) {
@@ -91,12 +87,9 @@ class User {
   async followStatus(id) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(
-        `${this.APP_URL}/follower/status/${id}`,
-        {
-          headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
-      );
+      const response = await axios.get(`${APP_URL}/follower/status/${id}`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
       return { success: true, data: response.data.status };
     } catch (error) {
       return this.handleError(error);
@@ -105,7 +98,7 @@ class User {
   async getFollowers(userId) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${this.APP_URL}/follower/${userId}`, {
+      const response = await axios.get(`${APP_URL}/follower/${userId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       return { success: true, data: response.data.followers };
@@ -117,7 +110,7 @@ class User {
   async getFollowings(userId) {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`${this.APP_URL}/followings/${userId}`, {
+      const response = await axios.get(`${APP_URL}/followings/${userId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       });
       return { success: true, data: response.data.followings };
@@ -129,9 +122,9 @@ class User {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${this.APP_URL}/follower/toggleFollow/${id}`,
+        `${APP_URL}/follower/toggleFollow/${id}`,
         {},
-        { headers: token ? { Authorization: `Bearer ${token}` } : {} }
+        { headers: token ? { Authorization: `Bearer ${token}` } : {} },
       );
       return { success: true, data: response.data.status };
     } catch (error) {
@@ -142,14 +135,14 @@ class User {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.put(
-        `${this.APP_URL}/settings/changeemail/${id}`,
+        `${APP_URL}/settings/changeemail/${id}`,
         {
           email,
           password,
         },
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
+        },
       );
 
       return {
@@ -166,14 +159,14 @@ class User {
       const token = localStorage.getItem("token");
 
       const response = await axios.post(
-        `${this.APP_URL}/settings/changepassword/${id}?_method=PUT`,
+        `${APP_URL}/settings/changepassword/${id}?_method=PUT`,
         {
           password,
           newPassword,
         },
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
+        },
       );
 
       return {
@@ -189,13 +182,13 @@ class User {
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        `${this.APP_URL}/settings/changestatus/${id}?_method=PUT`,
+        `${APP_URL}/settings/changestatus/${id}?_method=PUT`,
         {
           profile_status,
         },
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
-        }
+        },
       );
 
       return { success: true, data: response.message };
@@ -203,6 +196,49 @@ class User {
       return this.handleError(error);
     }
   }
-}
+
+  async getNotifcations() {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${APP_URL}/notifications`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async markAllAsRead() {
+    const token = localStorage.getItem("token");
+    try {      const response = await axios.post(
+        `${APP_URL}/notifications/mark-all-read`,
+        {},
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+      );
+      return { success: true, data: response.message };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async markAsRead(id) {  
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        `${APP_URL}/notifications/mark-read/${id}`,
+        {},
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+      );
+      return { success: true, data: response.data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+  }
 
 export const userObj = new User();

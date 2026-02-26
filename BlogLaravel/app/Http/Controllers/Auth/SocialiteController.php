@@ -22,8 +22,8 @@ class SocialiteController extends Controller
         $googleUser = Socialite::driver('google')->stateless()->user();
 
         $user = User::where('google_id', $googleUser->id)
-                    ->orWhere('email', $googleUser->email)
-                    ->first();
+            ->orWhere('email', $googleUser->email)
+            ->first();
 
         if (!$user) {
             $user = User::create([
@@ -32,7 +32,12 @@ class SocialiteController extends Controller
                 'password' => Hash::make(Str::random(16)),
                 'google_id' => $googleUser->id,
             ]);
-        }
+        } elseif ($user->status === "blocked") {
+            return response()->json([
+                "message" => "Your Account is Blocked"
+            ], 403);
+        };
+
 
         $token = $user->createToken('google_auth')->plainTextToken;
 

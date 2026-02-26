@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\ManageUserController;
 use App\Http\Controllers\Admin\ManagePostController;
 use App\Http\Controllers\Admin\SettingController as AdminSettingController;
 use App\Http\Controllers\Admin\TagController as AdminTagController;
+use App\Http\Controllers\user\NotificationController;
 
 // Google 
 Route::get('/auth/google', [SocialiteController::class, 'googleLogin']);
@@ -84,7 +85,11 @@ Route::prefix("comments")->middleware("auth:sanctum")->group(function () {
     Route::delete("/{id}", [CommentController::class, 'destroy']);
 });
 
-
+Route::middleware('auth:sanctum')->controller(NotificationController::class)->prefix('notifications')->group(function () {
+    Route::get('/','index');
+    Route::post('/mark-all-read', 'markALLasRead');
+    Route::post('/mark-read/{id}', 'markAsRead');
+});
 // followers
 Route::prefix("follower")->middleware("auth:sanctum")->group(function () {
     Route::get("/{id}", [FollowerController::class, 'getFollowers']);
