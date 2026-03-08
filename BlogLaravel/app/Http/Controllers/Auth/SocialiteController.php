@@ -41,6 +41,6 @@ class SocialiteController extends Controller
 
         $token = $user->createToken('google_auth')->plainTextToken;
 
-        return redirect(env('FRONTEND_URL') . '/google-callback?token=' . $token);
+        return redirect(config('services.frontend.url') . '/google-callback?token=' . $token);
     }
 }

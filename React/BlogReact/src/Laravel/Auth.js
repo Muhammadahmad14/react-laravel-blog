@@ -32,6 +32,10 @@ class AuthService {
       if (response.data.access_token) {
         localStorage.setItem("token", response.data.access_token);
         localStorage.setItem("userData", JSON.stringify(response.data.user));
+        localStorage.setItem(
+          "unread_notifications",
+          response.data.unread_notifications,
+        );
       }
 
       return { success: true, data: response.data };
@@ -39,7 +43,7 @@ class AuthService {
       return {
         success: false,
         message: error.response?.data?.message || "Something went wrong",
-        status: error.response?.status || 500, 
+        status: error.response?.status || 500,
       };
     }
   }
@@ -87,7 +91,7 @@ class AuthService {
       localStorage.removeItem("token");
       localStorage.removeItem("role");
       localStorage.removeItem("userData");
-
+      localStorage.removeItem("unread_notifications");
       return { success: true };
     } catch (error) {
       return {

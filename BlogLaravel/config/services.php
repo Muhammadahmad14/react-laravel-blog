@@ -42,7 +42,14 @@ return [
     ],
     'stripe' => [
         "stripe_key" => env('STRIPE_KEY'),
-        'stripe_secret_key' => env('STRIPE_SECRET_KEY')
+        'stripe_secret_key' => env('STRIPE_SECRET_KEY'),
+        'price_monthly' => env('STRIPE_PRICE_MONTHLY'),
+        'price_yearly' => env('STRIPE_PRICE_YEARLY'),
+        'webhook_secret' => env('STRIPE_WEBHOOK_SECRET'),
+    ],
+
+    'frontend' => [
+        'url' => env('FRONTEND_URL'),
     ],
 
 ];

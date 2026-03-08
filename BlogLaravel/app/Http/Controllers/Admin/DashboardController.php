@@ -12,7 +12,7 @@ class DashboardController extends Controller
 {
     public function __invoke()
     {
-        $stripe = new \Stripe\StripeClient(env('STRIPE_SECRET'));
+        $stripe = new \Stripe\StripeClient(config('services.stripe.stripe_secret_key'));
         $balance = $stripe->balance->retrieve();
         $totalAmount = $balance->available[0]->amount / 100;
 

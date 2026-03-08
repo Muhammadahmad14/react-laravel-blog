@@ -2,17 +2,18 @@
 
 namespace App\Notifications;
 
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use phpDocumentor\Reflection\Types\This;
 
-class LikePost extends Notification implements ShouldQueue
+class FollowUser extends Notification implements ShouldQueue
 {
     use Queueable;
     public $data;
+
     /**
      * Create a new notification instance.
      */
@@ -38,7 +39,8 @@ class LikePost extends Notification implements ShouldQueue
     {
         return new BroadcastMessage([
             'message' => $this->data['message'],
-            'post_id' => $this->data['post_id'],
+            'user_id' => $this->data['user_id'],
+            'username' => $this->data['user_name'],
         ]);
     }
 
@@ -51,7 +53,8 @@ class LikePost extends Notification implements ShouldQueue
     {
         return [
             'message' => $this->data['message'],
-            'post_id' => $this->data['post_id'],
+            'user_id' => $this->data['user_id'],
+            'username' => $this->data['user_name'],
         ];
     }
 }

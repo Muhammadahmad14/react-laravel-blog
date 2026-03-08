@@ -14,7 +14,7 @@ use Laravel\Scout\Searchable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, Searchable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -31,14 +31,6 @@ class User extends Authenticatable
         'profile_pic_status',
         'has_blue_tick',
     ];
-
-    public function toSearchableArray()
-    {
-        return [
-            'name' => $this->name,
-            'description'  => $this->description,
-        ];
-    }
 
 
     /**

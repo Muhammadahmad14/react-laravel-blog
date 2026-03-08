@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Notifications\FollowUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use PhpParser\Node\Expr\FuncCall;
@@ -60,11 +61,16 @@ class FollowerController extends Controller
         $isFollowing = $authUser->following()
             ->where('following_id', $targetUser->id)
             ->exists();
-
         if ($isFollowing) {
             $authUser->following()->detach($targetUser->id);
         } else {
             $authUser->following()->attach($targetUser->id);
+            $data = [
+                'message' => $authUser->name . ' Started following You',
+                'user_id' => $authUser->id,
+                'user_name' => $authUser->name,
+            ];
+            $targetUser->notify(new FollowUser($data));
         }
 
 

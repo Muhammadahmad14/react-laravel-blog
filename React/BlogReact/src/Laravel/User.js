@@ -211,7 +211,8 @@ class User {
 
   async markAllAsRead() {
     const token = localStorage.getItem("token");
-    try {      const response = await axios.post(
+    try {
+      const response = await axios.post(
         `${APP_URL}/notifications/mark-all-read`,
         {},
         {
@@ -224,7 +225,7 @@ class User {
     }
   }
 
-  async markAsRead(id) {  
+  async markAsRead(id) {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.post(
@@ -239,6 +240,47 @@ class User {
       return this.handleError(error);
     }
   }
+  async deleteNotification(id) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(
+        `${APP_URL}/notifications/delete/${id}`,
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+      );
+      return { success: true, data: response.data };
+    } catch (error) {
+      return this.handleError(error);
+    }
   }
+
+  async deleteAllNotifications() {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(
+        `${APP_URL}/notifications/delete-all`,
+        {
+          headers: token ? { Authorization: `Bearer ${token}` } : {},
+        },
+      );
+      return { success: true, data: response.data };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
+  async getUnreadNotificationCount() {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${APP_URL}/notifications/unread`, {
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      });
+      return { success: true, data: response.data.count };
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+}
 
 export const userObj = new User();

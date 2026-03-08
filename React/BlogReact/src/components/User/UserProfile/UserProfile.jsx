@@ -142,11 +142,14 @@ export default function UserProfile() {
           {isauthor && !user?.has_blue_tick && (
             <span className="absolute left-40  group">
               <Link to={"/payment/plans"}>
-                <Award
-                  className="text-yellow-400 cursor-pointer"
-                  size={30}
-                  strokeWidth={2}
-                />
+                <button className="flex">
+                  <Award
+                    className="text-yellow-400 cursor-pointer"
+                    size={30}
+                    strokeWidth={2}
+                  />
+                  Get Verified
+                </button>
               </Link>
               <div className="absolute bottom-full mb-2 w-max p-1 px-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition">
                 Get Verified & get Blue Tick

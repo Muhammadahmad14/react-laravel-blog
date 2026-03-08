@@ -37,7 +37,7 @@ class AuthController extends Controller
     {
         $attributes = $request->validate([
             'email' => ['required', 'email'],
-            'password' => ['required'], // no min:8 needed here
+            'password' => ['required'],
         ]);
 
         if (!Auth::attempt($attributes)) {
@@ -59,7 +59,8 @@ class AuthController extends Controller
         return response()->json([
             'access_token' => $token,
             'token_type' => 'Bearer',
-            'user' => $user
+            'user' => $user,
+            "unread_notifications" => $user->unreadNotifications()->count(),
         ]);
     }
 

@@ -7,9 +7,16 @@ use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = auth()->user();
+    }
+
     public function index()
     {
-        $user = auth()->user();
+        $user = $this->user;
         if (!$user) {
             return response()->json([
                 'message' => 'Unauthenticated'
@@ -21,9 +28,21 @@ class NotificationController extends Controller
         ];
     }
 
+    public function unreadCount()
+    {
+        $user = $this->user;
+        if (!$user) return response()->json([
+            'message' => 'Unauthenticated'
+        ], 401);
+
+        return [
+            'count' => $user->unreadNotifications()->count(),
+        ];
+    }
+
     public function markALLasRead()
     {
-        $user = auth()->user();
+        $user = $this->user;
         if (!$user) {
             return response()->json([
                 'message' => 'Unauthenticated'
@@ -37,7 +56,7 @@ class NotificationController extends Controller
 
     public function markAsRead($id)
     {
-        $user = auth()->user();
+        $user = $this->user;
         $notification = $user->unreadNotifications()->find($id);
 
         if (!$notification) {
@@ -50,6 +69,31 @@ class NotificationController extends Controller
 
         return response()->json([
             'message' => 'Notification marked as read'
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $user = $this->user;
+        $notification = $user->notifications()->findOrFail($id);
+
+        if (!$notification) {
+            return response()->json([
+                'message' => 'Notification not found'
+            ], 404);
+        }
+        $notification->delete();
+        return response()->json([
+            'message' => 'Notification deleted'
+        ]);
+    }
+
+    public function destroyAll()
+    {
+        $user = $this->user;
+        $user->readNotifications()->delete();
+        return response()->json([
+            'message' => 'Notification deleted'
         ]);
     }
 }

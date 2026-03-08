@@ -21,11 +21,10 @@ class SubscriptionController extends Controller
 
         $user = $request->user();
 
-        Stripe::setApiKey(env('STRIPE_SECRET'));
-
+        Stripe::setApiKey(config('services.stripe.stripe_secret_key'));
         $priceId = $request->plan === 'monthly'
-            ? env('STRIPE_PRICE_MONTHLY')
-            : env('STRIPE_PRICE_YEARLY');
+            ? config('services.stripe.price_monthly')
+            : config('services.stripe.price_yearly');
 
         $session = Session::create([
             'mode' => 'subscription',
@@ -40,8 +39,8 @@ class SubscriptionController extends Controller
                 'type' => 'blue_tick',
                 'plan' => $request->plan,
             ],
-            'success_url' => env('FRONTEND_URL') . '/success?session_id={CHECKOUT_SESSION_ID}',
-            'cancel_url' => env('FRONTEND_URL') . '/cancel',
+            'success_url' => config('services.frontend.url') . '/success?session_id={CHECKOUT_SESSION_ID}',
+            'cancel_url' => config('services.frontend.url') . '/cancel',
         ]);
 
         return response()->json([
@@ -53,7 +52,7 @@ class SubscriptionController extends Controller
     {
         $payload = $request->getContent();
         $sigHeader = $request->header('Stripe-Signature');
-        $secret = env('STRIPE_WEBHOOK_SECRET');
+        $secret = config('services.stripe.webhook_secret');
 
         try {
             $event = Webhook::constructEvent($payload, $sigHeader, $secret);

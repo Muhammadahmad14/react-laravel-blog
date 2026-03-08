@@ -87,8 +87,11 @@ Route::prefix("comments")->middleware("auth:sanctum")->group(function () {
 
 Route::middleware('auth:sanctum')->controller(NotificationController::class)->prefix('notifications')->group(function () {
     Route::get('/','index');
+    Route::get('/unread','unreadCount');
     Route::post('/mark-all-read', 'markALLasRead');
     Route::post('/mark-read/{id}', 'markAsRead');
+    Route::delete('/delete/{id}','destroy');
+    Route::delete('/delete-all','destroyAll');
 });
 // followers
 Route::prefix("follower")->middleware("auth:sanctum")->group(function () {

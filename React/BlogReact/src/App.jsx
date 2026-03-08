@@ -3,8 +3,14 @@ import { Outlet } from "react-router-dom";
 import Header from "./components/header/Header";
 import Sugestion from "./components/header/Sugestion";
 import ScrollToTop from "./layouts/ScrollToTop";
+import { createEcho } from "./eco/echo";
 
 function App() {
+const token = localStorage.getItem("token");
+
+if (token) {
+  window.Echo = createEcho(token);
+}
   return (
     <>
       <ScrollToTop />

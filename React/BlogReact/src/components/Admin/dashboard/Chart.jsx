@@ -80,7 +80,7 @@ function Chart({MontlyPosts}) {
         },
         title: {
           display: true,
-          text: "Revenue Over Time",
+          text: "Posts",
           color: isDark ? "#F9FAFB" : "#111827",
           font: { size: 18, weight: "bold" },
         },

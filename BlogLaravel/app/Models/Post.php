@@ -13,7 +13,7 @@ use phpDocumentor\Reflection\Types\This;
 
 class Post extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
 
     protected $fillable = [
@@ -24,15 +24,6 @@ class Post extends Model
         'image',
         'status',
     ];
-    public function toSearchableArray()
-    {
-        return [
-            'title' => $this->title,
-            'body'  => $this->body,
-            'slug'  => $this->slug,
-            'tags' => $this->tags->pluck('name')->toArray(),
-        ];
-    }
 
     public function user(): BelongsTo
     {

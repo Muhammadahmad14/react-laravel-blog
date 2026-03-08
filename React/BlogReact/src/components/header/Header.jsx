@@ -1,15 +1,25 @@
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { Home, Users, User, LogOut, Search, Settings, BellIcon } from "lucide-react";
+import {
+  Home,
+  Users,
+  User,
+  LogOut,
+  Search,
+  Settings,
+  BellIcon,
+} from "lucide-react";
 import { authservice } from "../../Laravel/Auth";
 import SearchBar from "../SearchBar";
 import { useLogout } from "../LogoutBtn";
 import UserMiniCard from "../User/UserMiniCard";
+import { getUnreadNotificationCount } from "../../utils/auth";
 
 function Header() {
   const [showSearch, setShowSearch] = useState(false);
   const [user, setUser] = useState(null);
   const logout = useLogout();
+  const notificationsCount = getUnreadNotificationCount();
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -30,7 +40,12 @@ function Header() {
       icon: <User size={20} />,
       to: user ? `/${user.name}/${user.id}/profile` : "/login",
     },
-    { name: "Notifications", icon: <BellIcon size={20} />, to: "/notifications" },
+    {
+      name: "Notifications",
+      icon: <BellIcon size={20} />,
+      to: "/notifications",
+      badge: notificationsCount > 0 ? notificationsCount : null,
+    },
     { name: "Setting", icon: <Settings size={20} />, to: "/setting" },
   ];
 
@@ -51,7 +66,7 @@ function Header() {
                 <NavLink
                   to={item.to}
                   className={({ isActive }) =>
-                    `flex items-center p-3 rounded-lg transition-all duration-200 ${
+                    `flex items-center p-3 rounded-lg transition-all duration-200 relative ${
                       isActive
                         ? "bg-blue-600 text-white"
                         : "text-gray-700 dark:text-gray-200 hover:bg-blue-600 hover:text-white"
@@ -60,6 +75,11 @@ function Header() {
                 >
                   <span className="text-lg">{item.icon}</span>
                   <span className="ms-3">{item.name}</span>
+                  {item.badge && (
+                    <span className="absolute top-1 left-5 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
                 </NavLink>
               </li>
             ))}
@@ -94,12 +114,19 @@ function Header() {
               <NavLink
                 to={item.to}
                 className={({ isActive }) =>
+                  `relative ${
                   isActive
                     ? "text-blue-600"
                     : "text-gray-500 dark:text-gray-300 hover:text-blue-600"
+                  }`
                 }
               >
                 {item.icon}
+                {item.badge && (
+                    <span className="absolute -top-2 left-4 bg-red-500 text-white text-xs px-1.5 rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
               </NavLink>
             </li>
           ))}
