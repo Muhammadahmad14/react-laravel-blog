@@ -1,7 +1,7 @@
 import Accordion from "../../components/Accordion";
 import { useEffect, useState } from "react";
 import ChangeEmail from "../../components/User/Settings/ChangeEmail";
-import ChangePassword from "../../components/User/Settings/changePassword";
+import ChangePassword from "../../components/User/Settings/ChangePassword";
 import ChangeStatus from "../../components/User/Settings/ChangeStatus";
 import Toast from "../../components/Toast";
 import { getUser } from "../../utils/auth";
