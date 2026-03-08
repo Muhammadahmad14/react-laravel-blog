@@ -3,7 +3,7 @@ import { User, Mail, Lock } from "lucide-react";
 import Image from "../../components/formComp/Image";
 import Input from "../../components/formComp/Input";
 import Button from "../../components/formComp/Button";
-import Checkbox from "../../components/formComp/CheckBox";
+import CheckBox from "../../components/formComp/CheckBox";
 import { useForm } from "react-hook-form";
 import { authservice } from "../../Laravel/Auth";
 import { Link, useNavigate } from "react-router-dom";
@@ -103,7 +103,7 @@ function Register() {
                 })}
                 error={errors.password?.message}
               />
-              <Checkbox
+              <CheckBox
                 label="Show Password"
                 checked={isPwdVisible}
                 onChange={(e) => setisPwdVisible(e.target.checked)}

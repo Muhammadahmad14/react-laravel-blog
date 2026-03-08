@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Lock, ShieldCheck } from "lucide-react";
-import { Input, Button, Image, Checkbox } from "../../components/formComp";
+import { Input, Button, Image, CheckBox } from "../../components/formComp";
 import { useNavigate } from "react-router-dom";
 import { authservice } from "../../Laravel/Auth";
 import { Loader2 } from "lucide-react";
@@ -71,7 +71,7 @@ function ConfirmPassword() {
             error={errors.confirmpassword?.message}
           />
 
-          <Checkbox
+          <CheckBox
             label="Show Password"
             checked={isPwdVisible}
             onChange={(e) => setIsPwdVisible(e.target.checked)}
