@@ -7,7 +7,7 @@ import { login } from "../../store/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { Loader2 } from "lucide-react";
 import GoogleLoginButton from "./GoogleLoginButton";
-import { Input, Button, Image, Checkbox } from "../../components/formComp";
+import { Input, Button, Image, CheckBox } from "../../components/formComp";
 
 function Login() {
   const [isPwdVisible, setisPwdVisible] = useState(false);
@@ -99,7 +99,7 @@ function Login() {
                 })}
                 error={errors.password?.message}
               />
-              <Checkbox
+              <CheckBox
                 label="Show Password"
                 checked={isPwdVisible}
                 onChange={(e) => setisPwdVisible(e.target.checked)}
