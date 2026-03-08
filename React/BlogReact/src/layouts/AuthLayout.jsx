@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { getUser } from "../utils/auth";
 
-function Authlayout() {
+function AuthLayout() {
   const [user] = useState(getUser());
 
   
@@ -13,4 +13,4 @@ function Authlayout() {
   return <Outlet />;
 }
 
-export default Authlayout;
+export default AuthLayout;
