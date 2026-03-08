@@ -1,6 +1,6 @@
 import React,{ useId } from "react";
 
-function Checkbox({ label, checked, onChange, className = "" },ref) {
+function CheckBox({ label, checked, onChange, className = "" },ref) {
   const id = useId(); 
 
   return (
@@ -25,4 +25,4 @@ function Checkbox({ label, checked, onChange, className = "" },ref) {
   );
 }
 
-export default React.forwardRef(Checkbox);
+export default React.forwardRef(CheckBox);
