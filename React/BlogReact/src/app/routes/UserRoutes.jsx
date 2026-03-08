@@ -1,5 +1,5 @@
-import AuthLayout from "../../layouts/AuthLayout";
-import PostForm from "../../components/Post/PostForm";
+import AuthLayout from "../../layouts/AuthLayout.jsx";
+import PostForm from "../../components/Post/PostForm.jsx";
 import {
   HomePage,
   Post,
