@@ -1,8 +1,7 @@
 import axios from "axios";
 
 class AuthService {
-  APP_URL = "http://127.0.0.1:8000/api";
-
+  APP_URL = import.meta.env.VITE_APP_URL;
   // REGISTER
   async register({ name, email, password }) {
     try {

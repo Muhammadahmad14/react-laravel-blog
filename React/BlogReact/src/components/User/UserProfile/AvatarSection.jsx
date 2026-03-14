@@ -10,7 +10,7 @@ function AvatarSection({
   isAuthor,
   imgRef,
 }) {
-  const basePath = "http://127.0.0.1:8000/storage";
+  const basePath = import.meta.env.VITE_IMAGE_PATH;
 
   const deleteImage = () => {
     if (isAuthor) {

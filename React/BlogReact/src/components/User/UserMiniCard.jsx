@@ -4,7 +4,7 @@ import { useLogout } from "../LogoutBtn";
 import { Link } from "react-router-dom";
 
 function UserMiniCard({ user, isDropdown = false }) {
-  const basePath = "http://127.0.0.1:8000/storage";
+  const basePath = import.meta.env.VITE_IMAGE_PATH;
   const [open, setOpen] = useState(false);
   const logout = useLogout();
   const dropdownRef = useRef(null);

@@ -2,7 +2,7 @@ import axios from "axios";
 import { authservice } from "./Auth";
 
 class Post {
-  APP_URL = "http://127.0.0.1:8000/api";
+  APP_URL = import.meta.env.VITE_APP_URL;
 
   handleError(error) {
     return {

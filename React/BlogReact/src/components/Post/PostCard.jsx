@@ -17,7 +17,7 @@ function PostCard({ post, onDeleted }) {
   const [sending, setSending] = useState(false);
   const [showCommentsModal, setShowCommentsModal] = useState(false);
 
-  const basePath = "http://127.0.0.1:8000/storage";
+  const basePath = import.meta.env.VITE_IMAGE_PATH;
 
   const postDate = new Date(post.created_at).toLocaleDateString("en-US", {
     day: "numeric",
@@ -55,11 +55,15 @@ function PostCard({ post, onDeleted }) {
     }
   }, [post]);
 
-  if (!openCard) return null;
+ if (!openCard) return null;
 
   return (
-    <div className="w-full max-w-md mx-auto mb-6 px-2 sm:px-0">
-      <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-sm">
+    // 1. Removed px-2 so it can stretch fully on mobile
+    <div className="w-full max-w-md mx-auto mb-6 sm:px-0">
+      {/* 2. Changed to rounded-none on mobile, and sm:rounded-lg for larger screens. 
+             Also made borders only apply on top/bottom for mobile, or full border on sm screens */}
+      <div className="bg-white dark:bg-slate-800 border-y sm:border border-slate-200 dark:border-slate-700 rounded-none sm:rounded-lg shadow-sm">
+        
         {/* Header */}
         <div className="relative flex justify-between items-center p-3 sm:p-4">
           <PostOptions
@@ -79,8 +83,8 @@ function PostCard({ post, onDeleted }) {
                 {post.user.name}
               </Link>
               {post.user.has_blue_tick ? (
-                <span className="flex items-center justify-center w-5 h-5 bg-blue-700 rounded-full border border-white shadow-sm">
-                  <BadgeCheck className="w-4 h-4 text-white" />
+                <span className="flex items-center justify-center w-4 h-4 sm:w-5 sm:h-5 bg-blue-700 rounded-full border border-white shadow-sm">
+                  <BadgeCheck className="w-3 h-3 sm:w-4 sm:h-4 text-white" />
                 </span>
               ) : null}
               <div className="text-slate-500 text-xs">{postDate}</div>
@@ -90,7 +94,8 @@ function PostCard({ post, onDeleted }) {
 
         {/* Image */}
         {post.image && (
-          <div className="h-56 sm:h-64 overflow-hidden mx-2 rounded-md">
+          // 3. Removed mx-2 and rounded-md on mobile so the image touches the screen edges
+          <div className="h-56 sm:h-64 overflow-hidden sm:mx-2 sm:rounded-md">
             <img
               src={`${basePath}/${post.image}`}
               alt="post"

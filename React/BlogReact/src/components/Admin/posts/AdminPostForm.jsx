@@ -13,7 +13,7 @@ function AdminPostForm({ post }) {
   const [tags, setTags] = useState("");
   const [removeImage, setRemoveImage] = useState(false);
   const [showPage, setShowPage] = useState(true);
-  const basePath = "http://127.0.0.1:8000/storage";
+  const basePath = import.meta.env.VITE_IMAGE_PATH;
   const navigate = useNavigate();
   const {
     register,

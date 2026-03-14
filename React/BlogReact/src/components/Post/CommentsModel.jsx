@@ -10,7 +10,7 @@ function CommentsModel({
   allcomments = [],
   onRemoveComment,
 }) {
-  const basePath = "http://127.0.0.1:8000/storage";
+  const basePath = import.meta.env.VITE_IMAGE_PATH;
   const [isOpen, setIsOpen] = useState(null);
   const [user, setUser] = useState(null);
   // getUser

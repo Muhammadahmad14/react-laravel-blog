@@ -6,16 +6,22 @@ use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
-use Stripe\Stripe;
+use Illuminate\Support\Facades\Log;
 
 class DashboardController extends Controller
 {
     public function __invoke()
     {
-        $stripe = new \Stripe\StripeClient(config('services.stripe.stripe_secret_key'));
-        $balance = $stripe->balance->retrieve();
-        $totalAmount = $balance->available[0]->amount / 100;
+        $totalAmount = 0;
 
+        try {
+            $stripe = new \Stripe\StripeClient(config('services.stripe.stripe_secret_key'));
+            $balance = $stripe->balance->retrieve();
+            $totalAmount = $balance->available[0]->amount / 100;
+        } catch (\Exception $e) {
+            Log::error('Stripe balance fetch failed: ' . $e->getMessage());
+            $totalAmount = null;
+        }
         $trendPosts = Post::withCount(['comments', 'likes'])
             ->orderByDesc('comments_count')
             ->orderByDesc('likes_count')
@@ -24,15 +30,17 @@ class DashboardController extends Controller
 
         $year = now()->year;
         $currentMonth = now()->month;
+
         $posts = Post::select(
-            DB::raw('MONTH(created_at) as month'),
-            DB::raw('COUNT(*) as total')
-        )
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('COUNT(*) as total')
+            )
             ->whereYear('created_at', $year)
             ->whereMonth('created_at', '<=', $currentMonth)
             ->groupBy('month')
             ->orderBy('month')
             ->get();
+
         $monthlyData = array_fill(1, $currentMonth, 0);
         foreach ($posts as $post) {
             $monthlyData[$post->month] = $post->total;

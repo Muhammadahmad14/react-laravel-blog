@@ -5,7 +5,7 @@ import { getUser } from "../../utils/auth";
 function CreatePostBox() {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
-  const basePath = "http://127.0.0.1:8000/storage";
+  const basePath = import.meta.env.VITE_IMAGE_PATH;
 
   useEffect(() => {
     setUser(getUser());
