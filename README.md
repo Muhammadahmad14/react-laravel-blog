@@ -28,10 +28,12 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 
 ---
 # HomePage
-<img src="https://github.com/user-attachments/assets/5a0d5b98-40cc-4d3e-baf4-9e3eadcc81b2" width="600" />
+<img width="400" height="1455" alt="localhost_5173_" src="https://github.com/user-attachments/assets/c84542ac-0542-422c-a9bb-545576c14874" />
+
 
 # UserProfile
-<img src="https://github.com/user-attachments/assets/1d2f96cf-31ee-46d3-92e7-e79460fc2a5f" width="600" />
+<img width="400" alt="localhost_5173_ (1)" src="https://github.com/user-attachments/assets/6e89629e-30ea-485e-b50f-16f238d18bad" />
+
 
 # Login Page
 <img src="https://github.com/user-attachments/assets/7f4260e7-c8f3-4e43-a799-10572c8e0625" width="400" />
