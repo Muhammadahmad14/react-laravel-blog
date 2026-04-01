@@ -11,6 +11,8 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 
 - User authentication (register/login)
 - Create, edit, and delete blog posts
+- Follow and Unfollow fucntionality
+- User can like and comment on Post
 - Search blog posts using Laravel Scout & Meilisearch
 - Responsive and interactive frontend built with React
 - Fully modular and extendable
