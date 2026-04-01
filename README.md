@@ -70,21 +70,3 @@ npm install
 npm start
 ```
 
----
-
-### 4. Search Setup (Laravel Scout + Meilisearch)
-```bash
-# Add the following to backend/.env manually:
-SCOUT_DRIVER=meilisearch
-MEILISEARCH_HOST=http://127.0.0.1:7700
-MEILISEARCH_KEY=your_meilisearch_key
-```
-
----
-
-### 5. Re-index Models
-```bash
-cd /foldername
-php artisan scout:import "App\Models\Post"
-php artisan scout:import "App\Models\User"
-```
