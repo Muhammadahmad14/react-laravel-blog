@@ -27,6 +27,19 @@ A modern blog application built with **Laravel** (backend) and **React** (fronte
 - **Version Control:** Git & GitHub
 
 ---
+# HomePage
+<img src="https://github.com/user-attachments/assets/5a0d5b98-40cc-4d3e-baf4-9e3eadcc81b2" width="600" />
+
+# UserProfile
+<img src="https://github.com/user-attachments/assets/1d2f96cf-31ee-46d3-92e7-e79460fc2a5f" width="600" />
+
+# Login Page
+<img src="https://github.com/user-attachments/assets/7f4260e7-c8f3-4e43-a799-10572c8e0625" width="400" />
+
+# AdminPage
+<img src="https://github.com/user-attachments/assets/4bbaadce-4e3a-496d-937d-61f168a65809" width="600" />
+
+
 
 ## Installation
 
