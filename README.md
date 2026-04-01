@@ -3,8 +3,6 @@
 
 A modern blog application built with **Laravel** (backend) and **React** (frontend) featuring a fast and flexible search functionality using **Laravel Scout** and **Meilisearch**.  
 
-> ⚠️ **Note:** This project is currently under development.
-
 ---
 
 ## Features
